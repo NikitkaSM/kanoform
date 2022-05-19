@@ -2,16 +2,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.views import APIView
-from .forms import FeedbackForm, QuestionaryForm, QualificationAnswerVariantForm, \
-    FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
-from .models import Feedback, QualificationQuestion, Questionary, QualificationQuestion, FeatureQuestion
+from .forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
+from .models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
 from django.contrib.auth.models import User
-from .logic import services
-from django.views.generic import ListView, TemplateView
+from .services import QualificationQuestionsBaseModel
+from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
-from .serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, QualificationQuestionCreateSerializer
-from pydantic import ValidationError
+from .serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, \
+    QualificationQuestionCreateSerializer
 
 
 def questionary_success_created(request):
@@ -93,17 +92,18 @@ class QualificationQuestionList(APIView):
     def get(self, request):
         qualification_question = QualificationQuestion.objects.all()
         serializer = QualificationQuestionSerializer(qualification_question, many=True)
-        qualificationQuestionDTO = services.QualificationQuestionBaseModel()
 
-        parsed_data = qualificationQuestionDTO.parse_raw(serializer.data)
+        serializer_in_json = QualificationQuestionsBaseModel(questions=serializer.data)
 
-        return Response(parsed_data)
+        parsed_json = serializer_in_json.dict()
+
+        return Response(parsed_json)
 
 
 class QualificationQuestionCreate(APIView):
     def post(self, request):
         serializer = QualificationQuestionCreateSerializer(data=request.data)
-        
+
         if serializer.is_valid():
             serializer.save()
 
@@ -115,14 +115,14 @@ class FeatureQuestionList(APIView):
         question = FeatureQuestion.objects.all()
         serializer = FeatureQuestionSerializer(question, many=True)
 
-        return Response()
-    
+        return Response(serializer.data)
+
 
 class FeatureQuestionCreate(APIView):
     def post(self, request):
         serializer = FeatureQuestionSerializer(data=request.data)
-        
+
         if serializer.is_valid():
             serializer.save()
-        
+
         return Response("success created")
