@@ -33,7 +33,12 @@ class QualificationQuestionCreate(APIView):
         if serializer.is_valid():
             serializer.save()
 
-        return Response("success created")
+        response = {
+            "status": "200",
+            "message": "Created successfully"
+        }
+
+        return Response(response)
 
 
 class FeatureQuestionGet(APIView):
@@ -63,4 +68,9 @@ class FeatureQuestionCreate(APIView):
         if serializer.is_valid():
             serializer.save()
 
-        return Response("success created")
+        response = {
+            "status": "200",
+            "message": "Created successfully"
+        }
+
+        return Response(response)
