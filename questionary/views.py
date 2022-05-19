@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
 from .models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
 from django.contrib.auth.models import User
-from .services import FeatureQuestionBaseModel, QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
+from .dto import FeatureQuestionBaseModel, QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
@@ -86,63 +86,3 @@ class QualificationQuestionAdd(TemplateView):
         }
 
         return self.render_to_response(context)
-
-
-class QualificationQuestionGet(APIView):
-    def get(self, request, pk):
-        qualification_question = QualificationQuestion.objects.get(id=pk)
-        serializer = QualificationQuestionSerializer(qualification_question)
-
-        return Response(serializer.data)
-
-
-class QualificationQuestionList(APIView):
-    def get(self, request):
-        qualification_question = QualificationQuestion.objects.all()
-        serializer = QualificationQuestionSerializer(qualification_question, many=True)
-
-        serializer_in_json = QualificationQuestionsBaseModel(questions=serializer.data)
-
-        parsed_json = serializer_in_json.dict()
-
-        return Response(parsed_json)
-
-
-class QualificationQuestionCreate(APIView):
-    def post(self, request):
-        serializer = QualificationQuestionCreateSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-        return Response("success created")
-
-
-class FeatureQuestionGet(APIView):
-    def get(self, request, pk):
-        feature_question = FeatureQuestion.objects.get(id=pk)
-        serializer = FeatureQuestionSerializer(feature_question)
-
-        return Response(serializer.data)
-
-
-class FeatureQuestionList(APIView):
-    def get(self, request):
-        question = FeatureQuestion.objects.all()
-        serializer = FeatureQuestionSerializer(question, many=True)
-
-        serializer_in_json = FeatureQuestionsBaseModel(questions=serializer.data)
-
-        parsed_data = serializer_in_json.dict()
-
-        return Response(parsed_data)
-
-
-class FeatureQuestionCreate(APIView):
-    def post(self, request):
-        serializer = FeatureQuestionSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-        return Response("success created")
