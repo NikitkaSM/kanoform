@@ -11,3 +11,13 @@ class QualificationQuestionBaseModel(BaseModel):
 
 class QualificationQuestionsBaseModel(BaseModel):
     questions: List[QualificationQuestionBaseModel]
+
+
+class FeatureQuestionBaseModel(BaseModel):
+    questionary: int
+    feature_name: str
+    feature_description: str
+
+
+class FeatureQuestionsBaseModel(BaseModel):
+    questions: List[FeatureQuestionBaseModel]

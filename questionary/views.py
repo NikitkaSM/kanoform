@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
 from .models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
 from django.contrib.auth.models import User
-from .services import QualificationQuestionsBaseModel
+from .services import QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
@@ -115,7 +115,11 @@ class FeatureQuestionList(APIView):
         question = FeatureQuestion.objects.all()
         serializer = FeatureQuestionSerializer(question, many=True)
 
-        return Response(serializer.data)
+        serializer_in_json = FeatureQuestionsBaseModel(questions=serializer.data)
+
+        parsed_data = serializer_in_json.dict()
+
+        return Response(parsed_data)
 
 
 class FeatureQuestionCreate(APIView):
