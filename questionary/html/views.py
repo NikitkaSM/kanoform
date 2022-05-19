@@ -2,14 +2,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.views import APIView
-from .forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
-from .models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
+from questionary.forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, qualificationQuestionFormset
+from questionary.models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
 from django.contrib.auth.models import User
-from .dto import FeatureQuestionBaseModel, QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
+from questionary.dto import FeatureQuestionBaseModel, QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
-from .serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, \
+from questionary.serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, \
     QualificationQuestionCreateSerializer
 
 

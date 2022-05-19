@@ -1,7 +1,7 @@
 from django.urls import path
-from questionary.api.api_views import FeatureQuestionCreate, FeatureQuestionGet, FeatureQuestionList, \
+from questionary.api.views import FeatureQuestionCreate, FeatureQuestionGet, FeatureQuestionList, \
     QualificationQuestionCreate, QualificationQuestionList, QualificationQuestionGet
-from questionary.views import QualificationQuestionAdd, questionary_success_created
+from questionary.html.views import QualificationQuestionAdd, questionary_success_created
 
 
 urlpatterns = [
