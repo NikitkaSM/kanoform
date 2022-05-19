@@ -90,8 +90,8 @@ class QualificationQuestionAdd(TemplateView):
 
 class QualificationQuestionGet(APIView):
     def get(self, request, pk):
-        qualification_question = QualificationQuestion.objects.filter(id=pk)
-        serializer = QualificationQuestionSerializer(qualification_question, many=True)
+        qualification_question = QualificationQuestion.objects.get(id=pk)
+        serializer = QualificationQuestionSerializer(qualification_question)
 
         return Response(serializer.data)
 
@@ -120,8 +120,8 @@ class QualificationQuestionCreate(APIView):
 
 class FeatureQuestionGet(APIView):
     def get(self, request, pk):
-        feature_question = FeatureQuestion.objects.filter(id=pk)
-        serializer = FeatureQuestionBaseModel(feature_question, many=True)
+        feature_question = FeatureQuestion.objects.get(id=pk)
+        serializer = FeatureQuestionSerializer(feature_question)
 
         return Response(serializer.data)
 
