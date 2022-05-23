@@ -30,7 +30,10 @@ class QualificationQuestion(models.Model):
 
 
 class FeatureQuestion(models.Model):
-    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE, related_name='feature_questions')
+    questionary = models.ForeignKey(
+        Questionary,
+        on_delete=models.CASCADE,
+        related_name='feature_questions')
     feature_name = models.CharField(max_length=50)
     feature_description = models.TextField(max_length=250)
 
@@ -39,19 +42,28 @@ class FeatureQuestion(models.Model):
 
 
 class FeatureResponse(models.Model):
-    feature_question = models.ForeignKey(FeatureQuestion, on_delete=models.CASCADE)
+    feature_question = models.ForeignKey(FeatureQuestion,
+                                         on_delete=models.CASCADE)
     answer_1 = models.IntegerField()
     answer_2 = models.IntegerField()
     answer_3 = models.IntegerField()
-    features_answers = models.ForeignKey("Response", on_delete=models.CASCADE, related_name="features_answers")
+    features_answers = models.ForeignKey(
+        "Response",
+        on_delete=models.CASCADE,
+        related_name="features_answers")
 
     class Meta:
         verbose_name_plural = "FeatureResponse"
 
 
 class QualificationResponse(models.Model):
-    qualification_question = models.ForeignKey(QualificationQuestion, on_delete=models.CASCADE)
-    qualification_answers = models.ForeignKey("Response", on_delete=models.CASCADE, related_name="qualification_answers")
+    qualification_question = models.ForeignKey(
+        QualificationQuestion,
+        on_delete=models.CASCADE)
+    qualification_answers = models.ForeignKey(
+        "Response",
+        on_delete=models.CASCADE,
+        related_name="qualification_answers")
 
     class Meta:
         verbose_name_plural = "QualificationResponse"
@@ -59,7 +71,9 @@ class QualificationResponse(models.Model):
 
 class Response(models.Model):
     questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE)
-    feedback = models.ForeignKey("Feedback", on_delete=models.DO_NOTHING, null=True)
+    feedback = models.ForeignKey(
+        "Feedback", on_delete=models.DO_NOTHING,
+        null=True)
 
     class Meta:
         verbose_name_plural = "Response"

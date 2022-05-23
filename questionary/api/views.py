@@ -1,14 +1,20 @@
 from rest_framework.views import APIView
-from questionary.models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
-from questionary.dto import FeatureQuestionBaseModel, QualificationQuestionsBaseModel, FeatureQuestionsBaseModel
+from questionary.models import Feedback, Questionary as QuestionaryModel, \
+    QualificationQuestion as QualificationQuestionModel, \
+    FeatureQuestion as FeatureQuestionModel
+from questionary.dto import FeatureQuestion as FeatureQuestionDto, \
+    QualificationQuestion as QualificationQuestionDto, Questionary as QuestionaryCreateDto
 from rest_framework.response import Response
-from questionary.serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, \
-    QualificationQuestionCreateSerializer
+from questionary.serializers import FeatureQuestion as FeatureQuestionSerializer, \
+    QualificationQuestion as QualificationQuestionSerializer, \
+    QualificationQuestionCreate as QualificationQuestionCreateSerializer, \
+    FeatureQuestionCreate as FeatureQuestionCreateSerializer
+from pydantic import ValidationError
 
 
 class QualificationQuestionGet(APIView):
     def get(self, request, pk):
-        qualification_question = QualificationQuestion.objects.get(id=pk)
+        qualification_question = QualificationQuestionModel.objects.get(id=pk)
         serializer = QualificationQuestionSerializer(qualification_question)
 
         return Response(serializer.data)
@@ -16,10 +22,10 @@ class QualificationQuestionGet(APIView):
 
 class QualificationQuestionList(APIView):
     def get(self, request):
-        qualification_question = QualificationQuestion.objects.all()
+        qualification_question = QualificationQuestionModel.objects.all()
         serializer = QualificationQuestionSerializer(qualification_question, many=True)
 
-        serializer_in_json = QualificationQuestionsBaseModel(questions=serializer.data)
+        serializer_in_json = QualificationQuestionDto(questions=serializer.data)
 
         parsed_json = serializer_in_json.dict()
 
@@ -43,7 +49,7 @@ class QualificationQuestionCreate(APIView):
 
 class FeatureQuestionGet(APIView):
     def get(self, request, pk):
-        feature_question = FeatureQuestion.objects.get(id=pk)
+        feature_question = FeatureQuestionModel.objects.get(id=pk)
         serializer = FeatureQuestionSerializer(feature_question)
 
         return Response(serializer.data)
@@ -51,10 +57,10 @@ class FeatureQuestionGet(APIView):
 
 class FeatureQuestionList(APIView):
     def get(self, request):
-        question = FeatureQuestion.objects.all()
+        question = FeatureQuestionModel.objects.all()
         serializer = FeatureQuestionSerializer(question, many=True)
 
-        serializer_in_json = FeatureQuestionsBaseModel(questions=serializer.data)
+        serializer_in_json = QualificationQuestionDto(questions=serializer.data)
 
         parsed_data = serializer_in_json.dict()
 
@@ -63,7 +69,7 @@ class FeatureQuestionList(APIView):
 
 class FeatureQuestionCreate(APIView):
     def post(self, request):
-        serializer = FeatureQuestionSerializer(data=request.data)
+        serializer = FeatureQuestionCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -74,3 +80,19 @@ class FeatureQuestionCreate(APIView):
         }
 
         return Response(response)
+
+
+class QuestionaryCreate(APIView):
+    def post(self, request):
+        data = request.data
+        try:
+            serializer = QuestionaryCreateDto.parse_raw(data)
+        except ValidationError as e:
+            return e
+
+        response = {
+            "status": "200",
+            "message": "Created successfully"
+        }
+
+        return Response(serializer)

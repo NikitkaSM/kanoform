@@ -1,23 +1,28 @@
-from pydantic import BaseModel
 from typing import List
+from pydantic import BaseModel
 
 
-class QualificationQuestionBaseModel(BaseModel):
+class QualificationQuestion(BaseModel):
     question: str
     is_multiple: str
     answer_variants: list
     questionary: int
 
+    class Config:
+        orm_mode = True
 
-class QualificationQuestionsBaseModel(BaseModel):
-    questions: List[QualificationQuestionBaseModel]
 
-
-class FeatureQuestionBaseModel(BaseModel):
+class FeatureQuestion(BaseModel):
     questionary: int
     feature_name: str
     feature_description: str
 
+    class Config:
+        orm_mode = True
 
-class FeatureQuestionsBaseModel(BaseModel):
-    questions: List[FeatureQuestionBaseModel]
+
+class Questionary(BaseModel):
+    name: str
+    user: int
+    feature_questions: List[FeatureQuestion]
+    qualification_questions: List[QualificationQuestion]
