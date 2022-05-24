@@ -3,12 +3,6 @@ from .models import FeatureQuestion as FeatureQuestionModel, QualificationQuesti
     Questionary as QuestionaryModel
 
 
-class QuestionarySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuestionaryModel
-        fields = ("name", "user")
-
-
 class QualificationQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QualificationQuestionModel
@@ -33,18 +27,17 @@ class FeatureQuestionCreateSerializer(serializers.ModelSerializer):
         exclude = ("id",)
 
 
-class QuestionaryCreateSerializer(serializers.ModelSerializer):
-    qualification_question = QualificationQuestionSerializer()
-    feature_question = FeatureQuestionSerializer(many=True)
-    questionary = QuestionarySerializer(many=True)
+class QuestionarySerializer(serializers.ModelSerializer):
+    qualification_questions = QualificationQuestionCreateSerializer(many=True)
+    feature_questions = FeatureQuestionCreateSerializer(many=True)
 
     class Meta:
         model = QuestionaryModel
-        fields = ("user", "name")
+        fields = ["user", "name", "qualification_questions", "feature_questions"]
 
     def create(self, validated_data):
-        qualification_questions = validated_data.pop("qualification_question")
-        feature_questions = validated_data.pop("feature_question")
+        qualification_questions = validated_data.pop("qualification_questions")
+        feature_questions = validated_data.pop("feature_questions")
         questionary = QuestionaryModel.objects.create(**validated_data)
 
         for qualification_question in qualification_questions:

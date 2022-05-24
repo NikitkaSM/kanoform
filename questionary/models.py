@@ -15,7 +15,7 @@ class Questionary(models.Model):
 
 
 class QualificationQuestion(models.Model):
-    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE)
+    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE, related_name="qualification_questions")
     question = models.TextField(max_length=150)
     answer_variants = ArrayField(
         models.TextField(max_length=100, blank=True),
