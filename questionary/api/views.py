@@ -8,8 +8,10 @@ from rest_framework.response import Response
 from questionary.serializers import FeatureQuestion as FeatureQuestionSerializer, \
     QualificationQuestion as QualificationQuestionSerializer, \
     QualificationQuestionCreate as QualificationQuestionCreateSerializer, \
-    FeatureQuestionCreate as FeatureQuestionCreateSerializer
+    FeatureQuestionCreate as FeatureQuestionCreateSerializer ,\
+    QuestionaryCreate as QuestionaryCreateSerializer
 from pydantic import ValidationError
+from rest_framework.generics import CreateAPIView
 
 
 class QualificationQuestionGet(APIView):
@@ -82,17 +84,5 @@ class FeatureQuestionCreate(APIView):
         return Response(response)
 
 
-class QuestionaryCreate(APIView):
-    def post(self, request):
-        data = request.data
-        try:
-            serializer = QuestionaryCreateDto.parse_raw(data)
-        except ValidationError as e:
-            return e
-
-        response = {
-            "status": "200",
-            "message": "Created successfully"
-        }
-
-        return Response(serializer)
+class QuestionaryCreate(CreateAPIView):
+    serializer_class = QuestionaryCreateSerializer

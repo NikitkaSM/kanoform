@@ -33,10 +33,17 @@ class FeatureQuestionCreate(serializers.ModelSerializer):
         exclude = ("id",)
 
 
-# class QuestionaryCreate(serializers.ModelSerializer):
-#     qualification_question = QualificationQuestion()
-#     feature_question = FeatureQuestion(many=True)
-#     questionary = Questionary(many=True)
-#
-#     class Meta:
-#         model = QuestionaryModel
+class QuestionaryCreate(serializers.Serializer):
+    qualification_question = QualificationQuestion()
+    feature_question = FeatureQuestion(many=True)
+    questionary = Questionary(many=True)
+
+    def create(self, validated_data):
+        # questionary = QuestionaryModel.objects.update_or_create(
+        #     user=validated_data.get("user"),
+        #     name=validated_data.get('name')
+        # )
+        # qualification_question = QualificationQuestionModel.objects.update_or_create(
+        #     questionary=
+        # )
+        return validated_data
