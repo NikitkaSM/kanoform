@@ -5,11 +5,8 @@ from questionary.models import Feedback, Questionary as QuestionaryModel, \
 from questionary.dto import FeatureQuestion as FeatureQuestionDto, \
     QualificationQuestion as QualificationQuestionDto, Questionary as QuestionaryCreateDto
 from rest_framework.response import Response
-from questionary.serializers import FeatureQuestion as FeatureQuestionSerializer, \
-    QualificationQuestion as QualificationQuestionSerializer, \
-    QualificationQuestionCreate as QualificationQuestionCreateSerializer, \
-    FeatureQuestionCreate as FeatureQuestionCreateSerializer ,\
-    QuestionaryCreate as QuestionaryCreateSerializer
+from questionary.serializers import FeatureQuestionSerializer, QualificationQuestionSerializer, \
+    QualificationQuestionCreateSerializer, FeatureQuestionCreateSerializer, QuestionaryCreateSerializer
 from pydantic import ValidationError
 from rest_framework.generics import CreateAPIView
 

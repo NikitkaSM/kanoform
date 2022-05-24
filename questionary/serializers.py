@@ -3,40 +3,54 @@ from .models import FeatureQuestion as FeatureQuestionModel, QualificationQuesti
     Questionary as QuestionaryModel
 
 
-class Questionary(serializers.ModelSerializer):
+class QuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionaryModel
         fields = ("name", "user")
 
 
-class QualificationQuestion(serializers.ModelSerializer):
+class QualificationQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QualificationQuestionModel
         fields = ("id", "questionary", "question", "answer_variants", 'is_multiple')
 
 
-class QualificationQuestionCreate(serializers.ModelSerializer):
+class QualificationQuestionCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QualificationQuestion
+        model = QualificationQuestionModel
         exclude = ("id",)
 
 
-class FeatureQuestion(serializers.ModelSerializer):
+class FeatureQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeatureQuestionModel
         exclude = ("questionary", "feature_name", 'feature_description')
 
 
-class FeatureQuestionCreate(serializers.ModelSerializer):
+class FeatureQuestionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeatureQuestionModel
         exclude = ("id",)
 
 
-class QuestionaryCreate(serializers.Serializer):
-    qualification_question = QualificationQuestion()
-    feature_question = FeatureQuestion(many=True)
-    questionary = Questionary(many=True)
+class QuestionaryCreateSerializer(serializers.ModelSerializer):
+    qualification_question = QualificationQuestionSerializer()
+    feature_question = FeatureQuestionSerializer(many=True)
+    questionary = QuestionarySerializer(many=True)
+
+    class Meta:
+        model = QuestionaryModel
+        fields = ("user", "name")
 
     def create(self, validated_data):
-        return validated_data
+        qualification_questions = validated_data.pop("qualification_question")
+        feature_questions = validated_data.pop("feature_question")
+        questionary = QuestionaryModel.objects.create(**validated_data)
+
+        for qualification_question in qualification_questions:
+            QualificationQuestionModel.objects.create(**qualification_question)
+
+        for feature_question in feature_questions:
+            FeatureQuestionModel.objects.create(**feature_question)
+
+        return questionary
