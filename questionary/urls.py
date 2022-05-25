@@ -1,7 +1,7 @@
 from django.urls import path
 from questionary.api.views import FeatureQuestionGet, FeatureQuestionList, \
     QualificationQuestionList, QualificationQuestionGet, QualificationQuestionCreate, FeatureQuestionCreate, \
-    QuestionaryCreate
+    Questionary
 from questionary.html.views import QualificationQuestionAdd, questionary_success_created
 
 
@@ -17,5 +17,6 @@ urlpatterns = [
     path("feature-question-list/", FeatureQuestionList.as_view()),
     path("feature-question-create/", FeatureQuestionCreate.as_view()),
 
-    path("questionary-create/", QuestionaryCreate.as_view()),
+    path("questionary/", Questionary.as_view()),
+    path("questionary/<int:pk>", QuestionaryCreate.as_view())
 ]

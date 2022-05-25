@@ -5,9 +5,9 @@ from questionary.models import Feedback, Questionary as QuestionaryModel, \
 from questionary.dto import FeatureQuestion as FeatureQuestionDto, \
     QualificationQuestion as QualificationQuestionDto, Questionary as QuestionaryCreateDto
 from rest_framework.response import Response
-from questionary.serializers import QuestionarySerializer
-from pydantic import ValidationError
-from rest_framework.generics import CreateAPIView
+from questionary.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
+    QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
 
 
 class QualificationQuestionGet(APIView):
@@ -80,5 +80,12 @@ class FeatureQuestionCreate(APIView):
         return Response(response)
 
 
-class QuestionaryCreate(CreateAPIView):
+class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView):
+    queryset = QuestionaryModel.objects.all()
     serializer_class = QuestionarySerializer
+
+    # def get(self, request):
+    #     objects = QuestionaryModel.objects.all()
+    #     serializer = QuestionarySerializer(objects, many=True)
+    #
+    #     return Response(serializer.data)

@@ -33,7 +33,7 @@ class QuestionarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuestionaryModel
-        fields = ["user", "name", "qualification_questions", "feature_questions"]
+        fields = ["id", "user", "name", "qualification_questions", "feature_questions"]
 
     def create(self, validated_data):
         qualification_questions = validated_data.pop("qualification_questions")
