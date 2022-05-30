@@ -1,8 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
-from questionary.forms import FeedbackForm, QuestionaryForm, FeatureQuestionForm, QualificationAnswerVariantForm, \
-    qualificationQuestionFormset
 from questionary.models import Feedback, Questionary, QualificationQuestion, FeatureQuestion
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
@@ -17,68 +15,58 @@ def questionary_success_created(request):
 class QualificationQuestionAdd(TemplateView):
     template_name = "questionary/form_create.html"
 
-    def get(self, *args, **kwargs):
-        formset = qualificationQuestionFormset(queryset=QualificationQuestion.objects.none())
+    # def post(self, request, *args, **kwargs):
+    #     feedback_form = FeedbackForm(request.POST)
+    #     questionary_form = QuestionaryForm(request.POST)
+    #     qualification_answer_variant_form = QualificationAnswerVariantForm(request.POST)
+    #     feature_question_form = FeatureQuestionForm(request.POST)
+    #     qualification_question_formset = qualificationQuestionFormset(queryset=QualificationQuestion.objects.none())
 
-        context = {
-            "qualification_question_formset": formset,
-        }
-        return self.render_to_response(context)
+    #     if questionary_form.is_valid():
+    #         Questionary.objects.create(name=request.POST.get("questionary_name"),
+    #                                    user=User.objects.get(username=request.user.get_username()))
 
-    def post(self, request, *args, **kwargs):
-        feedback_form = FeedbackForm(request.POST)
-        questionary_form = QuestionaryForm(request.POST)
-        qualification_answer_variant_form = QualificationAnswerVariantForm(request.POST)
-        feature_question_form = FeatureQuestionForm(request.POST)
-        qualification_question_formset = qualificationQuestionFormset(queryset=QualificationQuestion.objects.none())
+    #     questionary_name = Questionary.objects.get(name=request.POST.get("questionary_name"))
 
-        if questionary_form.is_valid():
-            Questionary.objects.create(name=request.POST.get("questionary_name"),
-                                       user=User.objects.get(username=request.user.get_username()))
+    #     if qualification_question_formset.is_valid():
+    #         qualification_question = request.POST.get("qualification_question")
 
-        questionary_name = Questionary.objects.get(name=request.POST.get("questionary_name"))
+    #         if qualification_answer_variant_form.is_valid():
+    #             answer_variant = request.POST.get("answer_variant")
+    #             QualificationQuestion.objects.create(
+    #                 questionary=questionary_name,
+    #                 question="{" + qualification_question + '}',
+    #                 answer_variants="{" + answer_variant + '}')
 
-        if qualification_question_formset.is_valid():
-            qualification_question = request.POST.get("qualification_question")
-            # qualification_question_dict = {"question": qualification_question}
-            # qualification_question = request.POST.get("qualification_question")
+    #     if feature_question_form.is_valid():
+    #         feature_question = request.POST.get("feature_question")
+    #         FeatureQuestion.objects.create(
+    #             questionary=questionary_name,
+    #             feature_name=request.POST.get("feature_question"),
+    #             feature_description=request.POST.get("feature_description"))
 
-            if qualification_answer_variant_form.is_valid():
-                answer_variant = request.POST.get("answer_variant")
-                QualificationQuestion.objects.create(
-                    questionary=questionary_name,
-                    question="{" + qualification_question + '}',
-                    answer_variants="{" + answer_variant + '}')
+    #     if feedback_form.is_valid():
+    #         email = request.POST.get("email")
+    #         phone_number = request.POST.get("phone_number")
+    #         messenger = request.POST.get("messenger")
+    #         first_name = request.POST.get("first_name")
+    #         last_name = request.POST.get("last_name")
 
-        if feature_question_form.is_valid():
-            feature_question = request.POST.get("feature_question")
-            FeatureQuestion.objects.create(
-                questionary=questionary_name,
-                feature_name=request.POST.get("feature_question"),
-                feature_description=request.POST.get("feature_description"))
+    #         Feedback.objects.create(
+    #             email=email,
+    #             phone_number=phone_number,
+    #             messenger=messenger,
+    #             first_name=first_name,
+    #             last_name=last_name,
+    #         )
+    #         return HttpResponseRedirect("/questionary-success")
 
-        if feedback_form.is_valid():
-            email = request.POST.get("email")
-            phone_number = request.POST.get("phone_number")
-            messenger = request.POST.get("messenger")
-            first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
+        # context = {
+        #     "feedback": feedback_form,
+        #     "questionary": questionary_form,
+        #     "qualification_answers": qualification_answer_variant_form,
+        #     "feature_question": feature_question_form,
+        #     "qualification_question_formset": qualification_question_formset,
+        # }
 
-            Feedback.objects.create(
-                email=email,
-                phone_number=phone_number,
-                messenger=messenger,
-                first_name=first_name,
-                last_name=last_name,
-            )
-            return HttpResponseRedirect("/questionary-success")
-
-        context = {
-            "feedback": feedback_form,
-            "questionary": questionary_form,
-            "qualification_answers": qualification_answer_variant_form,
-            "feature_question": feature_question_form,
-            "qualification_question_formset": qualification_question_formset,
-        }
-
-        return self.render_to_response(context)
+        # return self.render_to_response(context)

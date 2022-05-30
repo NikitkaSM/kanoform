@@ -11,7 +11,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 
 
 class QualificationQuestionGet(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk: int):
         qualification_question = QualificationQuestionModel.objects.get(id=pk)
         serializer = QualificationQuestionSerializer(qualification_question)
 
@@ -46,7 +46,7 @@ class QualificationQuestionCreate(APIView):
 
 
 class FeatureQuestionGet(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk: int):
         feature_question = FeatureQuestionModel.objects.get(id=pk)
         serializer = FeatureQuestionSerializer(feature_question)
 

@@ -18,5 +18,5 @@ urlpatterns = [
     path("feature-question-create/", FeatureQuestionCreate.as_view()),
 
     path("questionary/", Questionary.as_view()),
-    path("questionary/<int:pk>", QuestionaryCreate.as_view())
+    path("questionary/<int:pk>", Questionary.as_view())
 ]

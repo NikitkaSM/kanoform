@@ -1,0 +1,18 @@
+body {
+  text-align: center;
+  margin-top: 20%;
+}
+
+li {
+  list-style-type: none;
+}
+
+.question-input {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 20%;
+}
+
+.delete-button {
+  text-align: right;
+}
