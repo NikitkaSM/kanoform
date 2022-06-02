@@ -1,44 +1,69 @@
-const qualificationQuestionButton = document.getElementById("qualificationQuestionButton");
-const qualificationQuestionsContainer = document.getElementById("qualificationQuestionsContainer");
-let qualificationQuestionCounter = 0;
+const qualificationQuestionButton = document.getElementById(
+	'qualificationQuestionButton'
+);
+const qualificationQuestionsContainer = document.getElementById(
+	'qualificationQuestionsContainer'
+);
+let qualificationQuestionCounter = 1;
 
-const deleteQualificationQuestion = (event) => {
-    let button = event.target;
-    let li = button.parentNode;
-    li.remove();
-  }
+const deleteQualificationQuestion = event => {
+	let button = event.target;
+	let li = button.parentNode;
 
-const addQualificationQuestion = (event) => {
-  event.preventDefault();
+	li.remove();
+	qualificationQuestionCounter -= 1;
+	for (let i; i < qualificationQuestionCounter; i++) {
+		let question = document
+			.getElementById(`qualification-${i}`)
+			.removeAttribute('id');
+		if (question === null || undefined) {
+			console.log(i);
+		} else {
+			question.setAttribute('id', `qualification-${i}`);
+		}
+	}
+};
 
-  if (qualificationQuestionCounter === 10) {
-    alert("Максимальное кол-во вопросов");
-  } else if (qualificationQuestionCounter < 10) {
-    qualificationQuestionCounter++;
+const addQualificationQuestion = event => {
+	event.preventDefault();
 
-    const li = document.createElement("li");
-    const input = document.createElement("input");
-    const deleteButton = document.createElement("button");
+	if (qualificationQuestionCounter === 11) {
+		alert('Максимальное кол-во вопросов');
+	} else if (qualificationQuestionCounter < 11) {
+		const li = document.createElement('li');
+		const input = document.createElement('input');
+		const deleteButton = document.createElement('button');
+		const addAnswerVariantButton = document.createElement('button');
 
-    li.setAttribute("id", `qualification-${qualificationQuestionCounter}`);
+		addAnswerVariantButton.setAttribute('type', 'button');
 
-    qualificationQuestionsContainer.append(li);
+		li.setAttribute('id', `qualification-${qualificationQuestionCounter}`);
 
-    deleteButton.addEventListener("click", deleteQualificationQuestion);
+		qualificationQuestionsContainer.append(li);
 
-    const qualificationQuestionContainer = document.getElementById(`qualification-${qualificationQuestionCounter}`);
+		deleteButton.addEventListener('click', deleteQualificationQuestion);
 
-    qualificationQuestionContainer.append(input);
-    qualificationQuestionContainer.append(deleteButton);
+		const qualificationQuestionContainer = document.getElementById(
+			`qualification-${qualificationQuestionCounter}`
+		);
 
-    deleteButton.setAttribute("class", "rounded btn delete-button qualification-question");
-    deleteButton.innerText = 'delete';
+		qualificationQuestionContainer.append(input);
+		qualificationQuestionContainer.append(deleteButton);
+		qualificationQuestionContainer.append(addAnswerVariantButton);
 
-    input.setAttribute("type", "text");
-    input.setAttribute("class", "container form rounded question-input");
-    input.setAttribute("id", `featureInput${qualificationQuestionCounter}`);
-  }
-}
+		deleteButton.setAttribute(
+			'class',
+			'rounded btn delete-button qualification-question'
+		);
+		deleteButton.innerText = 'delete';
 
+		input.setAttribute('type', 'text');
+		input.setAttribute('class', 'container form rounded question-input');
+		input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
+		console.log(qualificationQuestionCounter);
 
-qualificationQuestionButton.addEventListener("click", addQualificationQuestion);
+		qualificationQuestionCounter++;
+	}
+};
+
+qualificationQuestionButton.addEventListener('click', addQualificationQuestion);
