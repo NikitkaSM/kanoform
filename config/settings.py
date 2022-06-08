@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from django.core.management.base import BaseCommand
+from django.core.cache import cache
 
 
 load_dotenv()
@@ -83,7 +85,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 LOGIN_REDIRECT_URL = '/landing'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+
+class Command(BaseCommand):
+    def handle(self, *args, **kwargs):
+        cache.clear()
+        self.stdout.write('Cleared cache\n')

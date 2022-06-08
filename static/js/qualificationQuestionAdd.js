@@ -1,69 +1,79 @@
 const qualificationQuestionButton = document.getElementById(
-	'qualificationQuestionButton'
+  'qualificationQuestionButton'
 );
 const qualificationQuestionsContainer = document.getElementById(
-	'qualificationQuestionsContainer'
+  'qualificationQuestionsContainer'
 );
 let qualificationQuestionCounter = 1;
 
 const deleteQualificationQuestion = event => {
-	let button = event.target;
-	let li = button.parentNode;
+  const questions = document.getElementsByClassName('qualificationQuestion');
+  console.log("test");
+  let button = event.target;
+  let li = button.parentNode;
 
-	li.remove();
-	qualificationQuestionCounter -= 1;
-	for (let i; i < qualificationQuestionCounter; i++) {
-		let question = document
-			.getElementById(`qualification-${i}`)
-			.removeAttribute('id');
-		if (question === null || undefined) {
-			console.log(i);
-		} else {
-			question.setAttribute('id', `qualification-${i}`);
-		}
-	}
+  li.remove();
+  qualificationQuestionCounter -= 1;
+
+  let second_counter = 1;
+
+  for (let i = 0; i < qualificationQuestionCounter - 1; i++) {
+    const questions_element_removed = Object.entries(questions)[i][1];
+    questions_element_removed.removeAttribute('id');
+  }
+
+  for (let x = 0; x < qualificationQuestionCounter - 1; x++) {
+    const questions_element_added = Object.entries(questions)[x][1];
+
+    questions_element_added.setAttribute(
+      'id',
+      `qualification-${second_counter}`
+    );
+    second_counter++;
+  }
 };
 
 const addQualificationQuestion = event => {
-	event.preventDefault();
+  event.preventDefault();
 
-	if (qualificationQuestionCounter === 11) {
-		alert('Максимальное кол-во вопросов');
-	} else if (qualificationQuestionCounter < 11) {
-		const li = document.createElement('li');
-		const input = document.createElement('input');
-		const deleteButton = document.createElement('button');
-		const addAnswerVariantButton = document.createElement('button');
+  if (qualificationQuestionCounter >= 11) {
+    alert('Максимальное кол-во вопросов');
+    return;
+  }
+  const li = document.createElement('li');
+  const input = document.createElement('input');
+  const deleteButton = document.createElement('button');
+  const addAnswerVariantButton = document.createElement('button');
 
-		addAnswerVariantButton.setAttribute('type', 'button');
+  addAnswerVariantButton.setAttribute('type', 'button');
 
-		li.setAttribute('id', `qualification-${qualificationQuestionCounter}`);
+  li.setAttribute('id', `qualification-${qualificationQuestionCounter}`);
+  li.setAttribute('class', 'qualificationQuestion');
 
-		qualificationQuestionsContainer.append(li);
+  qualificationQuestionsContainer.append(li);
 
-		deleteButton.addEventListener('click', deleteQualificationQuestion);
+  deleteButton.addEventListener('click', deleteQualificationQuestion);
 
-		const qualificationQuestionContainer = document.getElementById(
-			`qualification-${qualificationQuestionCounter}`
-		);
+  const qualificationQuestionContainer = document.getElementById(
+    `qualification-${qualificationQuestionCounter}`
+  );
 
-		qualificationQuestionContainer.append(input);
-		qualificationQuestionContainer.append(deleteButton);
-		qualificationQuestionContainer.append(addAnswerVariantButton);
+  qualificationQuestionContainer.append(input);
+  qualificationQuestionContainer.append(deleteButton);
+  qualificationQuestionContainer.append(addAnswerVariantButton);
 
-		deleteButton.setAttribute(
-			'class',
-			'rounded btn delete-button qualification-question'
-		);
-		deleteButton.innerText = 'delete';
+  deleteButton.setAttribute(
+    'class',
+    'rounded btn delete-button qualification-question'
+  );
+  deleteButton.innerText = 'delete';
 
-		input.setAttribute('type', 'text');
-		input.setAttribute('class', 'container form rounded question-input');
-		input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
-		console.log(qualificationQuestionCounter);
+  input.setAttribute('type', 'text');
+  input.setAttribute('class', 'container form rounded question-input');
+  input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
 
-		qualificationQuestionCounter++;
-	}
+  qualificationQuestionCounter++;
+
 };
 
 qualificationQuestionButton.addEventListener('click', addQualificationQuestion);
