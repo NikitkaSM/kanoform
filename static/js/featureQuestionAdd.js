@@ -3,6 +3,13 @@ const featureQuestionButton = document.getElementById('featureQuestionButton');
 const featureQuestionsContainer = document.getElementById('featureQuestionsContainer');
 
 const deleteFeatureQuestion = event => {
+  const questions = document.getElementsByClassName('featureQuestion');
+
+  if (questions.length === 1) {
+    alert("Должен быть как минимум один вопрос");
+    return;
+  }
+
   let button = event.target;
   let li = button.parentNode;
 
@@ -10,7 +17,6 @@ const deleteFeatureQuestion = event => {
 
   featureQuestionCounter -= 1;
 
-  const questions = document.getElementsByClassName("featureQuestion");
   let second_counter = 1;
 
   for (let i = 0; i < featureQuestionCounter; i++) {
@@ -31,7 +37,7 @@ const deleteFeatureQuestion = event => {
 
 const addFeatureQuestion = event => {
   event.preventDefault();
-  if (featureQuestionCounter >= 19) {
+  if (featureQuestionCounter >= 20) {
     alert('Максимальное кол-во вопросов');
     return;
   }

@@ -8,7 +8,12 @@ let qualificationQuestionCounter = 1;
 
 const deleteQualificationQuestion = event => {
   const questions = document.getElementsByClassName('qualificationQuestion');
-  console.log("test");
+
+  if (questions.length === 1) {
+    alert("Должен быть как минимум один вопрос");
+    return;
+  }
+
   let button = event.target;
   let li = button.parentNode;
 
@@ -43,15 +48,18 @@ const addQualificationQuestion = event => {
   const li = document.createElement('li');
   const input = document.createElement('input');
   const deleteButton = document.createElement('button');
-  const addAnswerVariantButton = document.createElement('button');
-
-  addAnswerVariantButton.setAttribute('type', 'button');
 
   li.setAttribute('id', `qualification-${qualificationQuestionCounter}`);
   li.setAttribute('class', 'qualificationQuestion');
 
   qualificationQuestionsContainer.append(li);
 
+  input.setAttribute('type', 'text');
+  input.setAttribute('class', 'container form rounded question-input');
+  input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
+  input.setAttribute("placeholder", "Введите вопрос");
+
+  deleteButton.setAttribute("type", "button");
   deleteButton.addEventListener('click', deleteQualificationQuestion);
 
   const qualificationQuestionContainer = document.getElementById(
@@ -60,17 +68,12 @@ const addQualificationQuestion = event => {
 
   qualificationQuestionContainer.append(input);
   qualificationQuestionContainer.append(deleteButton);
-  qualificationQuestionContainer.append(addAnswerVariantButton);
 
   deleteButton.setAttribute(
     'class',
     'rounded btn delete-button qualification-question'
   );
   deleteButton.innerText = 'delete';
-
-  input.setAttribute('type', 'text');
-  input.setAttribute('class', 'container form rounded question-input');
-  input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
 
   qualificationQuestionCounter++;
 

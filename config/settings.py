@@ -85,7 +85,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
 LOGIN_REDIRECT_URL = '/landing'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
