@@ -32,19 +32,17 @@ class QuestionarySerializer(serializers.ModelSerializer):
     feature_questions = FeatureQuestionSerializer(many=True)
 
     def create(self, validated_data):
-        last_questionary_id = QuestionaryModel.objects.all().last().id
+        # last_questionary_id = QuestionaryModel.objects.all().last().id
 
         qualification_questions = validated_data.pop('qualification_questions')
         feature_questions = validated_data.pop('feature_questions')
         questionary = QuestionaryModel.objects.create(**validated_data)
 
         for q_question in qualification_questions:
-            QualificationQuestionModel.objects.create(questionary=last_questionary_id+1, **q_question)
+            QualificationQuestionModel.objects.create(questionary=questionary, **q_question)
 
         for f_question in feature_questions:
-            FeatureQuestionModel.objects.create(questionary=last_questionary_id+1, **f_question)
-
-        # print(good_request)
+            FeatureQuestionModel.objects.create(questionary=questionary, **f_question)
 
         return questionary
 
