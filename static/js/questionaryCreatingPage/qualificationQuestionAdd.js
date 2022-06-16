@@ -1,24 +1,48 @@
 const qualificationQuestionButton = document.getElementById('qualificationQuestionButton');
 const qualificationQuestionsContainer = document.getElementById('qualificationQuestionsContainer');
 let qualificationQuestionCounter = 1;
-let answerVariantCounter = 0;
 
-const addAnswerVariant = event => {
+const deleteAnswerVariant = event => {
   const button = event.target;
-  const questionContainer = button.parentNode;
-  const answerVariantsContainer = questionContainer.querySelector('ul');
-  const answerVariant = document.createElement('li');
-  const answerVariants = document.getElementsByClassName('qualificationAnswerVariant');
+  const li = button.parentNode;
+  const liContainer = li.parentNode;
+  const answerVariants = liContainer.getElementsByClassName("qualification-answer-variant");
 
   if (answerVariants.length === 2) {
     alert('Должно быть минимум два варианта ответа');
     return;
   }
 
-  answerVariant.setAttribute('class', 'qualificationAnswerVariant');
-  
-  answerVariantsContainer.append(answerVariant);
+  li.remove();
+}
 
+const addAnswerVariant = event => {
+  const button = event.target;
+  const questionContainer = button.parentNode;
+  const answerVariantsContainer = questionContainer.querySelector('ul');
+  const answerVariant = document.createElement('li');
+  const answerVariantInput = document.createElement("input");
+  const deleteButton = document.createElement("button");
+  const answerVariants = answerVariantsContainer.getElementsByClassName("qualification-answer-variant");
+
+  answerVariantInput.setAttribute("type", 'text');
+  answerVariantInput.setAttribute("class", "qualification-answer-variant-input");
+  deleteButton.setAttribute("type", "button");
+  deleteButton.setAttribute("class", "btn");
+  deleteButton.innerText = "delete";
+  deleteButton.addEventListener("click", deleteAnswerVariant);
+
+  if (answerVariants.length === 4) {
+    alert("Максимальное кол-во вариантов ответа");
+    return;
+  }
+
+  answerVariant.setAttribute('class', 'qualification-answer-variant');
+  answerVariantsContainer.append(answerVariant);
+  const lastAnswerVariant = Object.entries(answerVariants).slice(-1)[0][1];
+
+  lastAnswerVariant.append(answerVariantInput);
+  lastAnswerVariant.append(deleteButton);
 
 };
 

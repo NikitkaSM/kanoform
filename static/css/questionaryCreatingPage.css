@@ -20,3 +20,11 @@ li {
 .answer-variant-add-button {
   text-align: right;
 }
+
+.qualification-answer-variant {
+  padding: 5px;
+}
+
+.feature-answer-variant {
+  padding: 10px;
+}
