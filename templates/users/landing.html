@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+    <div>
+      <span>{{ user.username }}</span>
+    </div>
     {% if user.is_authenticated %}
         <p><a href="/users/logout">Logout</a></p>
     {% else %}

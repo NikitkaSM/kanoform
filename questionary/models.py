@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Questionary(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=50, default="My Form")
 
     class Meta:
@@ -15,7 +15,11 @@ class Questionary(models.Model):
 
 
 class QualificationQuestion(models.Model):
-    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE, related_name="qualification_questions")
+    questionary = models.ForeignKey(
+        Questionary,
+        on_delete=models.CASCADE,
+        related_name="qualification_questions",
+         blank=True)
     question = models.TextField(max_length=150)
     answer_variants = ArrayField(
         models.TextField(max_length=100, blank=True),
@@ -33,12 +37,16 @@ class FeatureQuestion(models.Model):
     questionary = models.ForeignKey(
         Questionary,
         on_delete=models.CASCADE,
-        related_name='feature_questions')
+        related_name='feature_questions',
+        blank=True)
     feature_name = models.CharField(max_length=50)
     feature_description = models.TextField(max_length=250)
 
     class Meta:
         verbose_name_plural = "FeatureQuestion"
+
+    def __str__(self):
+        return self.feature_name
 
 
 class FeatureResponse(models.Model):
