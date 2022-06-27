@@ -13,7 +13,7 @@ def questionary_success_created(request):
 
 @method_decorator(staff_member_required, name="dispatch")
 class QualificationQuestionAdd(TemplateView):
-    template_name = "questionary/form_create.html"
+    template_name = "questionary/form_creating.html"
 
     # def post(self, request, *args, **kwargs):
     #     feedback_form = FeedbackForm(request.POST)

@@ -83,3 +83,18 @@ class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView)
     queryset = QuestionaryModel.objects.all()
     serializer_class = QuestionarySerializer
 
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+
+        if not pk:
+            return Response({"error": "Method put not allowed"})
+
+        try:
+            instance = QuestionaryModel.objects.get(pk=pk)
+        except:
+            return Response({"error": "Method put not allowed"})
+
+        serializer = QuestionarySerializer(data=request.data, instance=instance)
+        serializer.is_valid()
+        serializer.save()
+        return Response({"request": serializer.data})

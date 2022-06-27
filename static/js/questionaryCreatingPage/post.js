@@ -1,12 +1,8 @@
-const featureInputClassName = "feature-answer-variant-input";
-const qualificationInputClassName = "qualification-answer-variant-input";
-const featureLiClassName = "feature-answer-variant";
-const qualificationLiClassName = "qualification-answer-variant";
 const submitButton = document.getElementById("submitFormButton");
 
 //  TODO
 //  1. Протестить получение значений из форм с помощью object.entries - done
-//  2. Внедрить эту функцию в итоговый вариант после тестинга
+//  2. Попробовать внедрить эту функцию в итоговый вариант после тестинга
 // const getAnswerVariants = className => {
 //   return document.getElementsByClassName(className);
 // }
@@ -14,26 +10,88 @@ const submitButton = document.getElementById("submitFormButton");
 // 3. Добавить проверку на есть ли вообще фича вопросы и их инпуты
 // 4. Добавить проверку на то, если инпут существует, то он должен быть заполнен
 
-const getFeatureAnswerVariants = (inputClassName, liClassName) => {
-  const feature_questions = [];
-  const answerVariantsLiQuantity = document.getElementsByClassName("featureQuestion").length;
+const getFeatureQuestions = () => {
+  const featureQuestionsLi = document.getElementsByClassName("featureQuestion");
+  const featureQuestionsLiLength = featureQuestionsLi.length;
+  const featureQuestionsContainer = document.getElementById("featureQuestionsContainer");
+  const featureQuestions = []
 
-  for (let x = 0; x < answerVariantsLiQuantity; x++) {
-    const container = document.getElementsByClassName("featureQuestion")[x];
-    const featureDescription = container.getElementById
-    const answerVariants = container.getElementsByClassName(featureInputClassName);
-    const answerVariantsInputQuantity = answerVariants.length;
+  for (let i = 0; i < featureQuestionsLiLength; i++) {
 
-    for (let i = 0; i < answerVariantsInputQuantity; i++) {
-      const answerVariant = answerVariants[i];
-      
-      if (answerVariant.value === "") {
-				alert('Поле варианта ответа не должно быть пустым');
-				return;
-			}
-      console.log(answerVariant.value);
+    const featureQuestionContainer = featureQuestionsLi[i];
+    const featureNameInput = featureQuestionContainer.querySelector("#feature-name");
+    const featureDescriptionInput = featureQuestionContainer.querySelector("#feature-description");
+
+    if (featureDescriptionInput.value === "" || featureNameInput.value === "") {
+      alert("Поля описания или имя характеристики не должны быть пустыми");
+      return;
     }
+
+    const featureQuestion = {}
+    featureQuestion.feature_name = featureNameInput.value;
+    featureQuestion.feature_description = featureDescriptionInput.value;
+
+    featureQuestions.push(featureQuestion);
+  }
+
+  console.log(featureQuestions);
+}
+
+const getQualificationQuestions = () => {
+  const qualificationQuestionsLi = document.getElementsByClassName("qualificationQuestion");
+  const qualificationQuestionsLiLength = qualificationQuestionsLi.length;
+  const qualificationQuestions = [];
+
+  for (let x = 0; x < qualificationQuestionsLiLength; x++) {
+
+    const qualificationQuestionContainer = qualificationQuestionsLi[x];
+    const qualificationQuestionInput = qualificationQuestionContainer.querySelector("#qualification-question");
+    const answerVariantsLi = qualificationQuestionContainer.getElementsByClassName("qualification-answer-variant");
+    const answerVariantsLength = answerVariantsLi.length;
+    const qualificationQuestion = {};
+    qualificationQuestion.answer_variants = [];
+
+    if (qualificationQuestionInput.value === "") {
+      alert("Поле квалификационного вопроса не должно быть пустым");
+      return;
+    }
+
+    if (answerVariantsLength === 0 || answerVariantsLength === 1) {
+      alert("Вопросов ответа на квалификационный вопрос должно быть минимум 2");
+      return;
+    }
+
+    for (let n = 0; n < answerVariantsLength; n++) {
+      const answerVariantLi = answerVariantsLi[n];
+      const answerVariantInput = answerVariantLi.querySelector("#qualification-answer-variant-input");
+
+      if (answerVariantInput.value === "") {
+        alert("Поле варианта ответа на квалификационный вопрос не должно быть пустым");
+        return;
+      }
+
+      qualificationQuestion.answer_variants.push(answerVariantInput.value);
+    }
+
+    qualificationQuestion.question = qualificationQuestionInput.value;
+
+    answerVariantsLength <= 2 ?
+      (
+        qualificationQuestion.is_multiple = true
+      )
+      : (
+        qualificationQuestion.is_multiple = false
+      );
+
+    qualificationQuestions.push(qualificationQuestion);
+
+    console.log(qualificationQuestionsLi);
   }
 }
 
-submitButton.addEventListener("click", getFeatureAnswerVariants);
+const sendRequest = () => {
+  getFeatureQuestions();
+  getQualificationQuestions();
+}
+
+submitButton.addEventListener("click", sendRequest);

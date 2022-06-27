@@ -19,7 +19,7 @@ class QualificationQuestion(models.Model):
         Questionary,
         on_delete=models.CASCADE,
         related_name="qualification_questions",
-         blank=True)
+        blank=True)
     question = models.TextField(max_length=150)
     answer_variants = ArrayField(
         models.TextField(max_length=100, blank=True),

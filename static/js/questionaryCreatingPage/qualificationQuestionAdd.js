@@ -27,6 +27,8 @@ const addAnswerVariant = event => {
 
   answerVariantInput.setAttribute("type", 'text');
   answerVariantInput.setAttribute("class", "qualification-answer-variant-input");
+  answerVariantInput.setAttribute("id", "qualification-answer-variant-input");
+
   deleteButton.setAttribute("type", "button");
   deleteButton.setAttribute("class", "btn");
   deleteButton.innerText = "delete";
@@ -87,6 +89,9 @@ const addQualificationQuestion = event => {
   const li = document.createElement('li');
   const input = document.createElement('input');
   const deleteButton = document.createElement('button');
+  const answerVariantsContainer = document.createElement("ul");
+
+  answerVariantsContainer.setAttribute("id", "answer-variants-container");
 
   li.setAttribute('id', `qualification-${qualificationQuestionCounter}`);
   li.setAttribute('class', 'qualificationQuestion');
@@ -95,7 +100,7 @@ const addQualificationQuestion = event => {
 
   input.setAttribute('type', 'text');
   input.setAttribute('class', 'container form rounded question-input');
-  input.setAttribute('id', `featureInput${qualificationQuestionCounter}`);
+  input.setAttribute('id', 'qualification-question');
   input.setAttribute('placeholder', 'Введите вопрос');
 
   deleteButton.setAttribute('type', 'button');
@@ -111,7 +116,7 @@ const addQualificationQuestion = event => {
   qualificationQuestionContainer.append(input);
   qualificationQuestionContainer.append(deleteButton);
   qualificationQuestionContainer.append(answerVariantAddButton);
-  qualificationQuestionContainer.append(document.createElement('ul'));
+  qualificationQuestionContainer.append(answerVariantsContainer);
 
   deleteButton.setAttribute('class', 'rounded btn delete-button qualification-question');
   deleteButton.innerText = 'delete';

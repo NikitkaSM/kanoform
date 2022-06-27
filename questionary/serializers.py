@@ -1,8 +1,6 @@
-from django.http import HttpResponse
 from rest_framework import serializers
 from .models import FeatureQuestion as FeatureQuestionModel, QualificationQuestion as QualificationQuestionModel, \
     Questionary as QuestionaryModel
-import json
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
@@ -36,9 +34,6 @@ class QuestionarySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
 
-        if not user:
-            return HttpResponse("landing/")
-
         qualification_questions = validated_data.pop('qualification_questions')
         feature_questions = validated_data.pop('feature_questions')
         questionary = QuestionaryModel.objects.create(user=user, **validated_data)
@@ -52,23 +47,21 @@ class QuestionarySerializer(serializers.ModelSerializer):
         return questionary
 
     def update(self, instance, validated_data):
-        feature_questions = validated_data.pop("feature_questions")
-        qualification_questions = validated_data.pop("qualification_questions")
-
         instance.name = validated_data.get("name", instance.name)
+        feature_questions = validated_data['feature_questions']
+        qualification_questions = validated_data["qualification_questions"]
 
-        for f_question in feature_questions:
-            instance.feature_questions.feature_name = f_question.get(
-                "feature_name",
-                instance.feature_questions.feature_name)
-            instance.feature_questions.feature_description = f_question.get(
-                "feature_description",
-                instance.feature_questions.feature_description)
+        del instance.qualification_questions
+        del instance.feature_questions
 
-        for q_question in qualification_questions:
-            q_question['question'] = q_question.get("question", q_question['question'])
-            q_question['is_multiple'] = q_question.get("is_multiple", q_question['is_multiple'])
-            q_question['answer_variants'] = q_question.get("answer_variants", q_question['answer_variants'])
+        for f_question in validated_data.get('feature_questions', None):
+            instance.feature_questions.append(f_question)
+
+        for q_question in validated_data.get('qualification_questions', None):
+            instance.qualification_questions.append(q_question)
+
+        instance.qualification_questions.set(validated_data["qualification_questions"])
+        instance.feature_questions.set(validated_data["feature_questions"])
 
         instance.save()
 
@@ -77,3 +70,4 @@ class QuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionaryModel
         exclude = ("id",)
+        depth = 1
