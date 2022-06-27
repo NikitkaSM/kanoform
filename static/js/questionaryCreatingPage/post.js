@@ -85,7 +85,7 @@ const getQualificationQuestions = () => {
 
     qualificationQuestions.push(qualificationQuestion);
 
-    console.log(qualificationQuestionsLi);
+    console.log(qualificationQuestions);
   }
 }
 
