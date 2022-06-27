@@ -77,10 +77,10 @@ const getQualificationQuestions = () => {
 
     answerVariantsLength <= 2 ?
       (
-        qualificationQuestion.is_multiple = true
+        qualificationQuestion.is_multiple = false
       )
       : (
-        qualificationQuestion.is_multiple = false
+        qualificationQuestion.is_multiple = true
       );
 
     qualificationQuestions.push(qualificationQuestion);
