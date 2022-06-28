@@ -1,4 +1,4 @@
-const submitButton = document.getElementById("submitFormButton");
+const submitButton = document.getElementById("form-container");
 
 //  TODO
 //  1. Протестить получение значений из форм с помощью object.entries - done
@@ -10,11 +10,25 @@ const submitButton = document.getElementById("submitFormButton");
 // 3. Добавить проверку на есть ли вообще фича вопросы и их инпуты
 // 4. Добавить проверку на то, если инпут существует, то он должен быть заполнен
 
+const getQuestionaryName = () => {
+  const questionaryNameInput = document.getElementById("questionary-name");
+  if (questionaryNameInput.value === "") {
+    alert("У анкеты должно быть название");
+    return;
+  }
+
+  return questionaryNameInput.value;
+}
+
 const getFeatureQuestions = () => {
   const featureQuestionsLi = document.getElementsByClassName("featureQuestion");
   const featureQuestionsLiLength = featureQuestionsLi.length;
-  const featureQuestionsContainer = document.getElementById("featureQuestionsContainer");
   const featureQuestions = []
+
+  if (featureQuestionsLiLength === 0) {
+    alert("Должен быть минимум один вопрос характеристики");
+    return;
+  }
 
   for (let i = 0; i < featureQuestionsLiLength; i++) {
 
@@ -34,7 +48,7 @@ const getFeatureQuestions = () => {
     featureQuestions.push(featureQuestion);
   }
 
-  console.log(featureQuestions);
+  return featureQuestions;
 }
 
 const getQualificationQuestions = () => {
@@ -85,13 +99,23 @@ const getQualificationQuestions = () => {
 
     qualificationQuestions.push(qualificationQuestion);
 
-    console.log(qualificationQuestions);
+    return qualificationQuestions;
   }
 }
 
-const sendRequest = () => {
-  getFeatureQuestions();
-  getQualificationQuestions();
+const sendRequest = event => {
+  event.preventDefault();
+  const featureQuestions = getFeatureQuestions();
+  const qualificationQuestions = getQualificationQuestions();
+  const questionaryName = getQuestionaryName();
+
+  const questionary = {
+    name: questionaryName,
+    feature_questions: featureQuestions,
+    qualification_questions: qualificationQuestions
+  }
+
+  axios.post("/api/questionary", questionary);
 }
 
-submitButton.addEventListener("click", sendRequest);
+submitButton.addEventListener("submit", sendRequest);
