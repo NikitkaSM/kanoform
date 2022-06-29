@@ -1,14 +1,15 @@
 const submitButton = document.getElementById("form-container");
 
-//  TODO
-//  1. Протестить получение значений из форм с помощью object.entries - done
-//  2. Попробовать внедрить эту функцию в итоговый вариант после тестинга
-// const getAnswerVariants = className => {
-//   return document.getElementsByClassName(className);
-// }
-// const answerVariants = getAnswerVariants(featureInputClassName);
-// 3. Добавить проверку на есть ли вообще фича вопросы и их инпуты
-// 4. Добавить проверку на то, если инпут существует, то он должен быть заполнен
+function getCookie(cookieName) {
+  const name = cookieName + "=";
+  const cookieDecoded = decodeURIComponent(document.cookie); //to be careful
+  const cookieArr = cookieDecoded.split('; ');
+  let response;
+  cookieArr.forEach(val => {
+    if (val.indexOf(name) === 0) response = val.substring(name.length);
+  })
+  return response;
+}
 
 const getQuestionaryName = () => {
   const questionaryNameInput = document.getElementById("questionary-name");
@@ -115,7 +116,20 @@ const sendRequest = event => {
     qualification_questions: qualificationQuestions
   }
 
-  axios.post("/api/questionary", questionary);
+  const csrftoken = getCookie("csrftoken");
+
+  axios.post("/api/questionary/", questionary, {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken,
+    }
+  })
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    });
 }
 
 submitButton.addEventListener("submit", sendRequest);

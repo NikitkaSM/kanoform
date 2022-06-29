@@ -51,8 +51,8 @@ class QuestionarySerializer(serializers.ModelSerializer):
         feature_questions = validated_data['feature_questions']
         qualification_questions = validated_data["qualification_questions"]
 
-        del instance.qualification_questions
-        del instance.feature_questions
+        instance.feature_questions = []
+        instance.qualification_questions = []
 
         for f_question in validated_data.get('feature_questions', None):
             instance.feature_questions.append(f_question)
