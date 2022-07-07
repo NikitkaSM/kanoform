@@ -1,24 +1,34 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.middleware.csrf import get_token
 from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
-from django.http import HttpResponseNotFound
+from django.http import Http404, HttpResponseRedirect
+
+
+def handler404(request, exception):
+    return render(request, "errorHandlers/404.html")
+
+
+def handler500(request, *args, **argv):
+    return render(request, 'errorHandlers/500.html', status=500)
 
 
 def questionary_success_created(request):
-    if not request.user:
-        return HttpResponseNotFound("access denied")
-
-    csrf_token = get_token(request)
-    csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
     return render(request, "questionary/questionary_success_create.html")
 
 
-class QuestionaryList(TemplateView):
-    template_name = 'questionary/questionary-list.html'
+def questionary_list(request):
+    user = request.user
+
+    if user.is_anonymous or not user.is_staff or not user.is_authenticated:
+        return Http404()
+
+    return render(request, 'questionary/questionary-list.html')
 
 
-@method_decorator(staff_member_required, name="dispatch")
-class QualificationQuestionAdd(TemplateView):
-    template_name = "questionary/questionary-creating.html"
+def qualification_question_add(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return HttpResponseNotFound()
+
+    return render("questionary/questionary-creating.html")
+
+
+def page_not_fount_handler(request):
+    return render(request)
