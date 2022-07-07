@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import FeatureQuestion as FeatureQuestionModel, QualificationQuestion as QualificationQuestionModel, \
+from questionary.models import FeatureQuestion as FeatureQuestionModel, QualificationQuestion as QualificationQuestionModel, \
     Questionary as QuestionaryModel
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QualificationQuestionModel
-        fields = ("question", "answer_variants", 'is_multiple')
+        fields = ("id", "question", "answer_variants", 'is_multiple')
 
 
 class QualificationQuestionCreateSerializer(serializers.ModelSerializer):
@@ -47,21 +47,21 @@ class QuestionarySerializer(serializers.ModelSerializer):
         return questionary
 
     def update(self, instance, validated_data):
-        instance.name = validated_data.get("name", instance.name)
         feature_questions = validated_data['feature_questions']
         qualification_questions = validated_data["qualification_questions"]
+        instance.name = validated_data["name"]
 
-        instance.feature_questions = []
-        instance.qualification_questions = []
+        questionary_id = instance.id
 
-        for f_question in validated_data.get('feature_questions', None):
-            instance.feature_questions.append(f_question)
+        QualificationQuestionModel.objects.filter(pk=questionary_id).delete()
+        FeatureQuestionModel.objects.filter(pk=questionary_id).delete()
+        questionary = QuestionaryModel.objects.get(pk=questionary_id)
 
-        for q_question in validated_data.get('qualification_questions', None):
-            instance.qualification_questions.append(q_question)
+        for f_question in feature_questions:
+            FeatureQuestionModel.objects.create(questionary=questionary, **f_question)
 
-        instance.qualification_questions.set(validated_data["qualification_questions"])
-        instance.feature_questions.set(validated_data["feature_questions"])
+        for q_question in qualification_questions:
+            QualificationQuestionModel.objects.create(questionary=questionary, **q_question)
 
         instance.save()
 
@@ -70,4 +70,14 @@ class QuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionaryModel
         exclude = ("id",)
+        depth = 1
+
+
+class QuestionaryListSerializer(serializers.ModelSerializer):
+    qualification_questions = QualificationQuestionSerializer(many=True)
+    feature_questions = FeatureQuestionSerializer(many=True)
+
+    class Meta:
+        model = QuestionaryModel
+        fields = ("id", "name", "user", "qualification_questions", "feature_questions")
         depth = 1

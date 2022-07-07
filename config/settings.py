@@ -7,8 +7,8 @@ from django.core.cache import cache
 load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g(xkj4d!qvrt(qks$6zb+_p0^)o&t*z!oe0!9#wie09ie9ibaw'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

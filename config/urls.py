@@ -7,5 +7,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('landing/', landing, name='landing'),
     path('questionaries/', include('questionary.urls')),
-    path("api/", include("questionary.urls"))
+    path("api/", include("api.urls"))
 ]

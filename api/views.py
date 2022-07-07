@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
-from questionary.models import Feedback, Questionary as QuestionaryModel, \
+from questionary.models import Questionary as QuestionaryModel, \
     QualificationQuestion as QualificationQuestionModel, \
     FeatureQuestion as FeatureQuestionModel
-from questionary.dto import QualificationQuestion as QualificationQuestionDto
+from api.dto import QualificationQuestion as QualificationQuestionDto
 from rest_framework.response import Response
-from questionary.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
-    QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer
+from api.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
+    QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer, \
+    QuestionaryListSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
 
 
@@ -17,16 +18,9 @@ class QualificationQuestionGet(APIView):
         return Response(serializer.data)
 
 
-class QualificationQuestionList(APIView):
-    def get(self, request):
-        qualification_question = QualificationQuestionModel.objects.all()
-        serializer = QualificationQuestionSerializer(qualification_question, many=True)
-
-        serializer_in_json = QualificationQuestionDto(questions=serializer.data)
-
-        parsed_json = serializer_in_json.dict()
-
-        return Response(parsed_json)
+class QuestionaryList(ListAPIView):
+    queryset = QuestionaryModel.objects.all()
+    serializer_class = QuestionaryListSerializer
 
 
 class QualificationQuestionCreate(APIView):
