@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from questionary.models import FeatureQuestion as FeatureQuestionModel, QualificationQuestion as QualificationQuestionModel, \
-    Questionary as QuestionaryModel
+from questionary.models import FeatureQuestion as FeatureQuestionModel, \
+    QualificationQuestion as QualificationQuestionModel, Questionary as QuestionaryModel
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
@@ -79,5 +79,5 @@ class QuestionaryListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuestionaryModel
-        fields = ("id", "name", "user", "qualification_questions", "feature_questions")
+        fields = ("id", "name", "user", "qualification_questions", "feature_questions", "created_time")
         depth = 1

@@ -1,4 +1,3 @@
-i{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,7 @@ i{% load static %}
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
   />
-  <link rel="stylesheet" href="{% static "css/questionaryCreatingPage.css" %}">
+  <link rel="stylesheet" href="/static/css/questionaryCreatingPage.css">
   <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
 </head>
 <body>
@@ -27,21 +26,22 @@ i{% load static %}
     </button>
     <ul id="featureQuestionsContainer">
     </ul>
-    <input  class="btn btn-success" type="submit" id="submitFormButton" value="Создать">
+    <input class="btn btn-success" type="submit" id="submitFormButton" value="Создать">
   </form>
   </div>
   <script
     type="module"
-    src="{% static 'js/questionaryCreatingPage/qualificationQuestionAdd.js' %}"
+    src='/static/js/questionaryCreatingPage/qualificationQuestionAdd.js'
   ></script>
     <script
     type="module"
-    src="{% static 'js/questionaryCreatingPage/featureQuestionAdd.js' %}"
+    src='/static/js/questionaryCreatingPage/featureQuestionAdd.js'
   ></script>
   <script
     type="module"
-    src="{% static 'js/questionaryCreatingPage/post.js' %}"
+    src='/static/js/questionaryCreatingPage/post.js'
   ></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>

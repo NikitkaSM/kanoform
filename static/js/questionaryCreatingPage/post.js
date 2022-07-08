@@ -9,9 +9,10 @@ const getQuestionaryName = () => {
 	}
 	
 	return questionaryNameInput.value;
-};
+}
 
 const getFeatureQuestions = () => {
+	console.log("questons")
 	const featureQuestionsLi = document.getElementsByClassName('featureQuestion');
 	const featureQuestionsLiLength = featureQuestionsLi.length;
 	const featureQuestions = [];
@@ -42,7 +43,7 @@ const getFeatureQuestions = () => {
 	}
 
 	return featureQuestions;
-};
+}
 
 const getQualificationQuestions = () => {
 	const qualificationQuestionsLi = document.getElementsByClassName(
@@ -99,7 +100,7 @@ const getQualificationQuestions = () => {
 
 		return qualificationQuestions;
 	}
-};
+}
 
 const sendRequest = event => {
 	event.preventDefault();
@@ -111,20 +112,16 @@ const sendRequest = event => {
 		name: questionaryName,
 		feature_questions: featureQuestions,
 		qualification_questions: qualificationQuestions,
-	};
+	}
 	
-	axios
-		.post('/api/questionary/', questionary, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		.then(response => {
-			console.log(response.data);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
+	const csrftoken = Cookies.get("csrftoken");
 
-submitButton.addEventListener('submit', sendRequest);
+  axios.post("/api/questionary/", questionary, {
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": csrftoken
+		}
+	});
+}
+
+submitButton.addEventListener('click', sendRequest);

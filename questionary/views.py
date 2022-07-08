@@ -18,17 +18,13 @@ def questionary_list(request):
     user = request.user
 
     if user.is_anonymous or not user.is_staff or not user.is_authenticated:
-        return Http404()
+        raise Http404
 
     return render(request, 'questionary/questionary-list.html')
 
 
-def qualification_question_add(request):
+def questionary_creating(request):
     if not request.user.is_authenticated or not request.user.is_staff:
-        return HttpResponseNotFound()
+        raise Http404
 
-    return render("questionary/questionary-creating.html")
-
-
-def page_not_fount_handler(request):
-    return render(request)
+    return render(request, "questionary/questionary-creating.html")

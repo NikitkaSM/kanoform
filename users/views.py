@@ -15,10 +15,10 @@ def register(request):
         email = request.POST.get('email')
         username = request.POST.get('username')
 
-        if User.objects.filter(email=email).exists():
+        if User.objects.get(email=email).exists():
             return messages.error(request, "Пользователь с такой почтой уже существует.")
 
-        if User.objects.filter(username=username).exists():
+        if User.objects.get(username=username).exists():
             return messages.error(request, "Пользователь с таким юзернеймом уже существует.")
 
         if form.is_valid():
@@ -32,8 +32,7 @@ def register(request):
             ins.save()
             form.save_m2m()
 
-            return HttpResponseRedirect(request.GET.get('next',
-                                                        settings.LOGIN_REDIRECT_URL))
+            return HttpResponseRedirect('/landing')
 
     return render(request, 'users/register.html', {'form': form})
 

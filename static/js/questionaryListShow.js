@@ -8,15 +8,18 @@ const showQuestionaryList = () => {
 
       for (let x = 0; x < questionaries.length; x++) {
         const questionary = questionaries[x];
+	      console.log(questionary);
 				const div = document.createElement("div");
         const child = document.createElement('div');
         const name = document.createElement('h2');
 				const author = document.createElement("p");
 				const deleteButton = document.createElement("button");
+				const created_time = document.createElement("p");
 				
 				name.innerText = `Название: ${questionary.name}`;
 				author.innerText = `Автор: ${questionary.user.username}`;
-
+				created_time.innerText = `Дата создания: ${questionary.created_time.slice(0, -16)}`;
+	   
 				name.setAttribute("class", "questionary-name");
 				author.setAttribute('class', 'questionary-author');
 				
@@ -29,11 +32,14 @@ const showQuestionaryList = () => {
 				deleteButton.innerText = "❌";
 				deleteButton.addEventListener("click", deleteQuestionary);
 				deleteButton.setAttribute("type", "button");
+				
+				created_time.setAttribute("style", "margin: 0 !important; padding-left: 10px;");
 
         ul.append(child);
 				child.append(name);
 	      child.append(div);
 				div.append(author);
+				div.append(created_time);
 				div.append(deleteButton);
 				
       }
@@ -45,6 +51,7 @@ const deleteQuestionary = event => {
 	const parent = button.parentNode.parentNode;
 	const questionaryId = parent.getAttribute("id");
 	const token = Cookies.get("csrftoken");
+	
 	parent.remove();
 	
 	axios({

@@ -3,11 +3,10 @@ from dotenv import load_dotenv
 from django.core.management.base import BaseCommand
 from django.core.cache import cache
 
-
 load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g(xkj4d!qvrt(qks$6zb+_p0^)o&t*z!oe0!9#wie09ie9ibaw'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -79,9 +78,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ru'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
 STATIC_URL = '/static/'
