@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from questionary.models import Questionary as QuestionaryModel, \
     QualificationQuestion as QualificationQuestionModel, \
-    FeatureQuestion as FeatureQuestionModel
+    FeatureQuestion as FeatureQuestionModel, Response as ResponseModel
 from api.dto import QualificationQuestion as QualificationQuestionDto
-from rest_framework.response import Response
+from rest_framework.response import Response as ResponseJson
 from api.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
     QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer, \
-    QuestionaryListSerializer
+    QuestionaryListSerializer, ResponseSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
 
 
@@ -15,12 +15,22 @@ class QualificationQuestionGet(APIView):
         qualification_question = QualificationQuestionModel.objects.get(id=pk)
         serializer = QualificationQuestionSerializer(qualification_question)
 
-        return Response(serializer.data)
+        return ResponseJson(serializer.data)
 
 
 class QuestionaryList(ListAPIView):
     queryset = QuestionaryModel.objects.all()
     serializer_class = QuestionaryListSerializer
+
+
+class Response(CreateAPIView):
+    serializer_class = ResponseSerializer
+
+    def get(self, request, pk: int):
+        response = ResponseModel.objects.get(id=pk)
+        serializer = ResponseSerializer(response)
+ 
+        return ResponseJson(serializer.data)
 
 
 class QualificationQuestionCreate(APIView):
@@ -35,7 +45,7 @@ class QualificationQuestionCreate(APIView):
             "message": "Created successfully"
         }
 
-        return Response(response)
+        return ResponseJson(response)
 
 
 class FeatureQuestionGet(APIView):
@@ -43,7 +53,7 @@ class FeatureQuestionGet(APIView):
         feature_question = FeatureQuestionModel.objects.get(id=pk)
         serializer = FeatureQuestionSerializer(feature_question)
 
-        return Response(serializer.data)
+        return ResponseJson(serializer.data)
 
 
 class FeatureQuestionList(APIView):
@@ -55,7 +65,7 @@ class FeatureQuestionList(APIView):
 
         parsed_data = serializer_in_json.dict()
 
-        return Response(parsed_data)
+        return ResponseJson(parsed_data)
 
 
 class FeatureQuestionCreate(APIView):
@@ -70,7 +80,7 @@ class FeatureQuestionCreate(APIView):
             "message": "Created successfully"
         }
 
-        return Response(response)
+        return ResponseJson(response)
 
 
 class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView):
@@ -81,14 +91,15 @@ class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView)
         pk = kwargs.get("pk", None)
 
         if not pk:
-            return Response({"error": "Method put not allowed"})
+            return ResponseJson({"error": "Method put not allowed"})
 
         try:
             instance = QuestionaryModel.objects.get(pk=pk)
         except:
-            return Response({"error": "Method put not allowed"})
+            return ResponseJson({"error": "Method put not allowed"})
 
         serializer = QuestionarySerializer(data=request.data, instance=instance)
         serializer.is_valid()
         serializer.save()
-        return Response({"request": serializer.data})
+
+        return ResponseJson({"request": serializer.data})

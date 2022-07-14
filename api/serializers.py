@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from questionary.models import FeatureQuestion as FeatureQuestionModel, \
-    QualificationQuestion as QualificationQuestionModel, Questionary as QuestionaryModel
+    QualificationQuestion as QualificationQuestionModel, Questionary as QuestionaryModel, \
+    QualificationResponse as QualificationResponseModel, FeatureResponse as FeatureResponseModel, \
+    Response as ResponseModel, Feedback as FeedbackModel
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
@@ -81,3 +83,50 @@ class QuestionaryListSerializer(serializers.ModelSerializer):
         model = QuestionaryModel
         fields = ("id", "name", "user", "qualification_questions", "feature_questions", "created_time")
         depth = 1
+
+
+class QualificationResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QualificationResponseModel
+        fields = ("id", "qualification_question", "answer")
+
+
+class FeatureResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeatureResponseModel
+        fields = ("id", "answer_1", "answer_2", "answer_3", "feature_question")
+
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedbackModel
+        fields = ("id", "first_name", "last_name", "email", "messenger", "phone_number")
+
+
+class ResponseSerializer(serializers.ModelSerializer):
+    qualification_response = QualificationResponseSerializer(many=True)
+    feature_response = FeatureResponseSerializer(many=True)
+    feedback = FeedbackSerializer
+
+    def create(self, validated_data):
+        context = self.context['request'].data
+        feedback = context.get("feedback")
+        questionary = context.get("questionary").get("id")
+        questionary_instance = QuestionaryModel.objects.get(id=questionary)
+        qualification_response = validated_data.pop("qualification_response")
+        feature_response = validated_data.pop("feature_response")
+        response = ResponseModel.objects.create(questionary=questionary_instance)
+        FeedbackModel.objects.create(response=response, **feedback)
+
+        for q_response in qualification_response:
+            QualificationResponseModel.objects.create(response=response, **q_response)
+
+        for f_response in feature_response:
+            FeatureResponseModel.objects.create(response=response, **f_response)
+
+        return response
+
+    class Meta:
+        model = ResponseModel
+        fields = ("id", "feedback", "questionary", "qualification_response", 'feature_response')
+        depth = 2

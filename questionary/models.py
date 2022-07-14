@@ -58,10 +58,10 @@ class FeatureResponse(models.Model):
     answer_1 = models.IntegerField()
     answer_2 = models.IntegerField()
     answer_3 = models.IntegerField()
-    features_answers = models.ForeignKey(
+    response = models.ForeignKey(
         "Response",
         on_delete=models.CASCADE,
-        related_name="features_answers")
+        related_name="feature_response")
 
     class Meta:
         verbose_name_plural = "FeatureResponse"
@@ -71,26 +71,25 @@ class QualificationResponse(models.Model):
     qualification_question = models.ForeignKey(
         QualificationQuestion,
         on_delete=models.CASCADE)
-    qualification_answers = models.ForeignKey(
+    response = models.ForeignKey(
         "Response",
         on_delete=models.CASCADE,
-        related_name="qualification_answers")
+        related_name="qualification_response", null=True)
+    answer = models.TextField(max_length=100, null=True)
 
     class Meta:
         verbose_name_plural = "QualificationResponse"
 
 
 class Response(models.Model):
-    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE)
-    feedback = models.ForeignKey(
-        "Feedback", on_delete=models.DO_NOTHING,
-        null=True)
+    questionary = models.ForeignKey(Questionary, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name_plural = "Response"
 
 
 class Feedback(models.Model):
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, null=True, related_name="feedback")
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     messenger = models.TextField()

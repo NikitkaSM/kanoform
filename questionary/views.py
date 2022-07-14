@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
 
 
+def questionary_fill_in(request, pk):
+    return render(request, "questionary/questionary-fill-in.html")
+
+
 def handler404(request, exception):
     return render(request, "errorHandlers/404.html")
 
