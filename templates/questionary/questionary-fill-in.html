@@ -56,24 +56,9 @@
     )
   }
 
-  function AnswerVariant({answerVariantName, i}) {
-    const [activeIndex, setActiveIndex] = useState(0)
-
-    return (<p>
-        <input
-          type="radio"
-          className="m-[5px]"
-          onClick={() => setActiveIndex(i)}
-          checked={activeIndex === i}
-        />
-        {answerVariantName}
-      </p>
-    )
-  }
-
   function QualificationQuestions() {
     const [qualificationQuestions, setQualificationQuestions] = useState([])
-
+    const [activeIndex, setActiveIndex] = useState(0)
 
     useEffect(() => {
       questionary.then(response => {
@@ -92,7 +77,15 @@
               <div className="flex flex-col m-[10px]">
                 {qQuestion.answer_variants.map((answerVariant, i) => {
                   return (
-                    <AnswerVariant answerVariant={answerVariant} i={i}/>
+                     <p>
+                       <input
+                          type="radio"
+                          className="m-[5px]"
+                          onClick={() => setActiveIndex(i)}
+                          checked={activeIndex === i}
+                       />
+                       {answerVariant}
+                     </p>
                   )
                 })}
               </div>
