@@ -139,7 +139,6 @@ const questionaryShow = () => {
 					p.innerHTML = answerVariant;
 					p.setAttribute("style",
 						"margin-left: 5px; margin-right: 5px; margin-top: 0 !important; margin-bottom: 2px !important;");
-					console.log(answerVariant);
 					container.append(numberContainer);
 					container.append(inputContainer);
 

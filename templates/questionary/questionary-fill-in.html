@@ -1,21 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title></title>
-	<link rel="stylesheet" href="/static/css/questionaryFillIn.css">
+  <meta charset="UTF-8"/>
+  <title>Questionary Fill In</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+  ></script>
+  <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+  ></script>
+  <script
+      crossorigin
+      src="https://unpkg.com/history@5/umd/history.production.min.js"
+  ></script>
+  <script
+      crossorigin
+      src="https://unpkg.com/react-router@6/umd/react-router.production.min.js"
+  ></script>
+  <script
+      crossorigin
+      src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.production.min.js"
+  ></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<div class="header">
-	<h1 class="questionary-name"></h1>
-	<p class="questionary-author"></p>
+<div data-questionary-id={{ questionary_id }}></div>
+<div class="h-screen" id="root">
+  <!--  <script type="module" src="/static/js/questionary/questionaryFillIn.js"></script>-->
 </div>
-<div class="main" id="root">
-<div class="qualification-questions"></div>
-  <hr>
-<div class="feature-questions"></div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script type="module" src="/static/js/questionary/questionaryFillIn.js"></script>
+<script type="text/babel">
+  const {useEffect, useState} = React
+  const questionaryId = window.location.pathname.replace(/\D/g, "")
+  const questionary = axios.get(`/api/questionary/${questionaryId}`).catch(error => console.log(error))
+
+  function QuestionaryInfo() {
+    const [data, setData] = useState({})
+    const [username, setUsername] = useState("")
+
+    useEffect(() => {
+      questionary.then(response => {
+        setData(prev => ({...prev, ...response.data}))
+        setUsername(response.data.user.username)
+      })
+    }, [])
+
+    return (
+      <div className="flex flex-col items-center" id="header">
+        <h1 className="text-4xl m-[10px]">{data.name}</h1>
+        <p className="">Автор: {username}</p>
+      </div>
+    )
+  }
+
+  function AnswerVariant({answerVariantName, i}) {
+    const [activeIndex, setActiveIndex] = useState(0)
+
+    return (<p>
+        <input
+          type="radio"
+          className="m-[5px]"
+          onClick={() => setActiveIndex(i)}
+          checked={activeIndex === i}
+        />
+        {answerVariantName}
+      </p>
+    )
+  }
+
+  function QualificationQuestions() {
+    const [qualificationQuestions, setQualificationQuestions] = useState([])
+
+
+    useEffect(() => {
+      questionary.then(response => {
+        Object.keys(response.data.qualification_questions).forEach(
+          key => setQualificationQuestions(prev => [...prev, response.data.qualification_questions[key]]))
+      })
+
+    }, []);
+
+    return (
+      <div className="m-[50px]">
+        {qualificationQuestions.map(qQuestion => {
+          return (
+            <div className="flex flex-col items-center m-[15px]">
+              <h1 className="text-3xl">{qQuestion.question}</h1>
+              <div className="flex flex-col m-[10px]">
+                {qQuestion.answer_variants.map((answerVariant, i) => {
+                  return (
+                    <AnswerVariant answerVariant={answerVariant} i={i}/>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  function FeatureQuestions() {
+    const [featureQuestions, setFeatureQuestions] = useState([])
+
+    useEffect(() => {
+      questionary.then(response => setFeatureQuestions(prev => [...prev, ...response.data.feature_questions]))
+    }, [])
+
+    const radioButtonStyles = {
+      width: 14,
+      height: 14,
+      marginLeft: 6
+    }
+
+    return (
+      <div className="m-[50px]" id="feature-questions">
+        {featureQuestions.map(fQuestion => {
+            return (
+              <div className="flex m-[15px] flex-col items-center">
+                <h1 className="text-3xl">{fQuestion.feature_name}</h1>
+                <p className="text-x m-[10px]">{fQuestion.feature_description}</p>
+                <h1 className="text-xl mt-[20px] mb-[30px]">Насколько вам нравится присутствие в продукте такой фичи,
+                  свойства
+                  или
+                  характеристики?</h1>
+                <ul className="flex flex-col items-center m-[10px]">
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Мне это нравится</span></li>
+                  <li className="m-[5px]"><input type="radio"/><span
+                    className="ml-[5px]">Я ожидаю, что эта характеристика будет в продукте</span>
+                  </li>
+                  <li className="m-[5px]"><input type="radio"/><span
+                    className="ml-[5px]">Я отношусь к ней нейтрально</span>
+                  </li>
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Я могу ее терпеть</span>
+                  </li>
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Мне это не нравится</span>
+                  </li>
+                </ul>
+                <h1 className="text-xl mt-[20px] mb-[30px]">А если эта характеристика будет отсутствовать в продукте
+                  или
+                  слабо
+                  выражена?</h1>
+                <ul className="flex flex-col items-center m-[10px]">
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Мне это нравится</span></li>
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Я ожидаю это</span></li>
+                  <li className="m-[5px]"><input type="radio"/><span
+                    className="ml-[5px]">Я отношусь к этому нейтрально</span></li>
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Я могу это терпеть</span>
+                  </li>
+                  <li className="m-[5px]"><input type="radio"/><span className="ml-[5px]">Мне это не нравится</span>
+                  </li>
+                </ul>
+                <h1 className="text-xl mt-[20px] mb-[30px]">На сколько важна для вас эта характеристика?</h1>
+                <div className="m-[10px]">
+                  <div className="flex flex-row">
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>1</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>2</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>3</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>4</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>5</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>6</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>7</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>8</span></div>
+                    <div className="flex flex-col items-center justify-center m-[5px]"><input type="radio"
+                                                                                              className="m-[5px]"/><span
+                      style={radioButtonStyles}>9</span></div>
+                  </div>
+                </div>
+
+              </div>
+            )
+          }
+        )}
+
+      </div>
+    )
+  }
+
+  function App() {
+    return (
+      <>
+        <QuestionaryInfo/>
+        <QualificationQuestions/>
+        <FeatureQuestions/>
+      </>
+    )
+  }
+
+
+  ReactDOM.createRoot(document.getElementById("root"))
+    .render(
+      <App/>
+    )
+</script>
 </body>
 </html>

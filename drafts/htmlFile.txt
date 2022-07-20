@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Questionary Fill In</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/history@5/umd/history.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-router@6/umd/react-router.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div data-questionary-id={{ questionary_id }} hidden></div>
+<div id="root" class="h-screen">
+  <div class="m-[50px]" id="feature-questions">
+    {% for f_question in feature_questions %}
+      <div class="flex m-[15px] flex-col items-center">
+      <h1 class="text-3xl">{{ f_question.feature_name }}</h1>
+      <p class="text-x m-[10px]">{{ f_question.feature_description }}</p>
+      <h1 class="text-xl  mt-[20px] mb-[30px]">Насколько вам нравится присутствие в продукте такой фичи, свойства
+        или
+        характеристики?</h1>
+      <ul class="flex flex-col items-center m-[10px]">
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Мне это нравится</span></li>
+        <li class="m-[5px]"><input type="radio"><span
+            class="ml-[5px]">Я ожидаю, что эта характеристика будет в продукте</span>
+        </li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Я отношусь к ней нейтрально</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Я могу ее терпеть</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Мне это не нравится</span></li>
+      </ul>
+      <h1 class="text-xl mt-[20px] mb-[30px]">А если эта характеристика будет отсутствовать в продукте или слабо
+        выражена?</h1>
+      <ul class="flex flex-col items-center m-[10px]">
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Мне это нравится</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Я ожидаю это</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Я отношусь к этому нейтрально</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Я могу это терпеть</span></li>
+        <li class="m-[5px]"><input type="radio"><span class="ml-[5px]">Мне это не нравится</span></li>
+      </ul>
+      <h1 class="text-xl mt-[20px] mb-[30px]">На сколько важна для вас эта характеристика?</h1>
+      <div class="flex flex-row">
+        <span class="text-lg mx-[11px]">1</span>
+        <span class="text-lg mx-[11px]">2</span>
+        <span class="text-lg mx-[11px]">3</span>
+        <span class="text-lg mx-[11px]">4</span>
+        <span class="text-lg mx-[11px]">5</span>
+        <span class="text-lg mx-[11px]">6</span>
+        <span class="text-lg mx-[11px]">7</span>
+        <span class="text-lg mx-[11px]">8</span>
+        <span class="text-lg mx-[11px]">9</span>
+      </div>
+      <div class="flex flex-row">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+        <input class="mx-[10px]" type="radio">
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+  <!--  <script type="module" src="/static/js/questionary/questionaryFillIn.js"></script>-->
+</div>
+<script type="text/babel">
+  const {useEffect, useState} = React
+  const questionaryId = window.location.pathname.replace(/[^0-9]/g, "")
+  const questionary = axios.get(`/api/questionary/${questionaryId}`).catch(error => console.log(error))
+
+  function QuestionaryInfo() {
+    const [data, setData] = useState({})
+    const [username, setUsername] = useState("")
+
+    useEffect(() => {
+      questionary.then(response => {
+        setData(prev => ({...prev, ...response.data}))
+        setUsername(response.data.user.username)
+      })
+    }, [])
+
+    return (
+      <div className="flex flex-col items-center" id="header">
+        <h1 className="text-4xl m-[10px]">{data.name}</h1>
+        <p className="">Автор: {username}</p>
+      </div>
+    )
+  }
+
+  function QualificationQuestions() {
+      const [qualificationQuestions, setQualificationQuestions] = useState({})
+
+    useEffect(() => {
+      questionary.then(response => {setQualificationQuestions(prev => ({...prev, ...response.data.qualification_questions}))})
+      console.log(qualificationQuestions)
+    }, []);
+
+    return (
+        <div>h1</div>
+    )
+  }
+
+  function App() {
+    return (
+      <>
+        <QuestionaryInfo />
+        <QualificationQuestions />
+       </>
+    )
+  }
+
+
+  ReactDOM.createRoot(document.getElementById("root"))
+    .render(
+      <App />
+    )
+
+</script>
+</body>
+</html>

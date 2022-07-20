@@ -29,7 +29,7 @@ class Response(CreateAPIView):
     def get(self, request, pk: int):
         response = ResponseModel.objects.get(id=pk)
         serializer = ResponseSerializer(response)
- 
+
         return ResponseJson(serializer.data)
 
 
