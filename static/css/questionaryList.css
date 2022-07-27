@@ -2,32 +2,3 @@ body {
   margin: 0;
   padding: 0;
 }
-
-.questionariesContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.questionary-name {
-  margin: 0 !important;
-}
-
-.questionary-author {
-  margin: 0 !important;
-}
-
-.questionary {
-  margin: 10px;
-  border: 10px black;
-}
-
-.delete-button {
-  text-decoration: none;
-  display: inline-block;
-  background-color: white;
-  border-radius: 20px;
-  border-color: black;
-  margin-left: 10px;
-}

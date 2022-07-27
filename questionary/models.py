@@ -89,12 +89,12 @@ class Response(models.Model):
 
 
 class Feedback(models.Model):
-    response = models.ForeignKey(Response, on_delete=models.CASCADE, null=True, related_name="feedback")
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    messenger = models.TextField()
-    phone_number = models.TextField()
-    email = models.CharField(max_length=75)
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, null=True, related_name="feedback", blank=True)
+    first_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50, blank=True, null=True)
+    messenger = models.TextField(blank=True, null=True)
+    phone_number = models.TextField(blank=True, null=True)
+    email = models.CharField(max_length=75, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Feedback"

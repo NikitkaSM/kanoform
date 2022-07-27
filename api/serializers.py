@@ -20,7 +20,7 @@ class QualificationQuestionCreateSerializer(serializers.ModelSerializer):
 class FeatureQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeatureQuestionModel
-        fields = ("feature_name", 'feature_description')
+        fields = ("id", "feature_name", 'feature_description')
 
 
 class FeatureQuestionCreateSerializer(serializers.ModelSerializer):
