@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from questionary.models import Questionary as QuestionaryModel, \
     QualificationQuestion as QualificationQuestionModel, \
     FeatureQuestion as FeatureQuestionModel, Response as ResponseModel
-from api.dto import QualificationQuestion as QualificationQuestionDto
 from rest_framework.response import Response as ResponseJson
 from api.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
     QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer, \
@@ -58,14 +57,10 @@ class FeatureQuestionGet(APIView):
 
 class FeatureQuestionList(APIView):
     def get(self, request):
-        question = FeatureQuestionModel.objects.all()
-        serializer = FeatureQuestionSerializer(question, many=True)
+        questions = FeatureQuestionModel.objects.all()
+        serializer = FeatureQuestionSerializer(questions, many=True)
 
-        serializer_in_json = QualificationQuestionDto(questions=serializer.data)
-
-        parsed_data = serializer_in_json.dict()
-
-        return ResponseJson(parsed_data)
+        return ResponseJson(serializer.data)
 
 
 class FeatureQuestionCreate(APIView):

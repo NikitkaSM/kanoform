@@ -55,8 +55,8 @@ class FeatureQuestion(models.Model):
 class FeatureResponse(models.Model):
     feature_question = models.ForeignKey(FeatureQuestion,
                                          on_delete=models.CASCADE)
-    answer_1 = models.IntegerField()
-    answer_2 = models.IntegerField()
+    answer_1 = models.TextField()
+    answer_2 = models.TextField()
     answer_3 = models.IntegerField()
     response = models.ForeignKey(
         "Response",
