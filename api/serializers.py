@@ -49,15 +49,15 @@ class QuestionarySerializer(serializers.ModelSerializer):
         return questionary
 
     def update(self, instance, validated_data):
-        feature_questions = validated_data['feature_questions']
-        qualification_questions = validated_data["qualification_questions"]
+        feature_questions = validated_data.pop('feature_questions')
+        qualification_questions = validated_data.pop("qualification_questions")
         instance.name = validated_data["name"]
 
         questionary_id = instance.id
-
-        QualificationQuestionModel.objects.filter(pk=questionary_id).delete()
-        FeatureQuestionModel.objects.filter(pk=questionary_id).delete()
         questionary = QuestionaryModel.objects.get(pk=questionary_id)
+
+        QualificationQuestionModel.objects.filter(questionary=questionary).delete()
+        FeatureQuestionModel.objects.filter(questionary=questionary).delete()
 
         for f_question in feature_questions:
             FeatureQuestionModel.objects.create(questionary=questionary, **f_question)

@@ -1,14 +1,13 @@
-import django
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
-from django.utils import timezone
 
 
 class Questionary(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=50, default="My Form")
-    created_time = models.DateTimeField(default=django.utils.timezone.now, blank=True)
+    created_time = models.DateTimeField(default=timezone.now, blank=True)
 
     class Meta:
         verbose_name_plural = "Questionary"

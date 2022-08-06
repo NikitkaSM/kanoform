@@ -1,0 +1,158 @@
+{
+  'qualification_questions': [
+    OrderedDict(
+    [
+      (
+      'question',
+      'Кем вы работаете?>>>>>'
+      ),
+      (
+      'answer_variants',
+      [
+        'Продукт',
+        'Программист'
+      ]
+      ),
+      (
+      'is_multiple',
+      False)
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'question',
+      'сколько вам лет?'
+      ),
+      (
+      'answer_variants',
+      [
+        '123',
+        '1234'
+      ]
+      ),
+      (
+      'is_multiple',
+      True)
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'question',
+      'Кем вы работаете??'
+      ),
+      (
+      'answer_variants',
+      [
+        'Продукт',
+        'Программист'
+      ]
+      ),
+      (
+      'is_multiple',
+      False)
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'question',
+      'сколько вам лет?'
+      ),
+      (
+      'answer_variants',
+      [
+        '123',
+        '1234'
+      ]
+      ),
+      (
+      'is_multiple',
+      True)
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'question',
+      'Кем вы работаете??'
+      ),
+      (
+      'answer_variants',
+      [
+        'Продукт',
+        'Программист'
+      ]
+      ),
+      (
+      'is_multiple',
+      False)
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'question',
+      'сколько вам лет?'
+      ),
+      (
+      'answer_variants',
+      [
+        '123',
+        '1234'
+      ]
+      ),
+      (
+      'is_multiple',
+      True)
+    ]
+    )
+  ],
+  'feature_questions': [
+    OrderedDict(
+    [
+      (
+      'feature_name',
+      'Лайк'
+      ),
+      (
+      'feature_description',
+      'Позволяет оценивать продукт'
+      )
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'feature_name',
+      'Лайк'
+      ),
+      (
+      'feature_description',
+      'Позволяет оценивать продукт'
+      )
+    ]
+    ),
+    OrderedDict(
+    [
+      (
+      'feature_name',
+      'Лайк'
+      ),
+      (
+      'feature_description',
+      'Позволяет оценивать продукт'
+      )
+    ]
+    )
+  ],
+  'name': 'Продукты Кано',
+  'created_time': datetime.datetime(2022,
+  7,
+  8,
+  11,
+  29,
+  43,
+  702909)
+}

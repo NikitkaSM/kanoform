@@ -2,7 +2,11 @@ from django.shortcuts import render
 from django.http import Http404
 
 
-def questionary_fill_in(request, pk):
+def questionary_editing(request, pk: int):
+    return render(request, "questionary/questionary-editing.html")
+
+
+def questionary_fill_in(request, pk: int):
     context = {
         "questionary_id": str(pk)
     }
