@@ -57,7 +57,7 @@ def login(request):
 
         if user and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            return HttpResponseRedirect("/questionaries/questionary-list/")
         else:
             return messages.error(request, 'Такой пользователь не существует')
 

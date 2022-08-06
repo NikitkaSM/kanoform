@@ -30,7 +30,7 @@
   const FAnswerVariantButtonStyles = {
     width: 14,
     height: 14,
-    marginLeft: 6,
+    marginLeft: 6
   }
 
   const firstQuestion = [
@@ -38,7 +38,7 @@
     'Я ожидаю, что эта характеристика будет в продукте',
     'Я отношусь к ней нейтрально',
     'Я могу ее терпеть',
-    'Мне это не нравится',
+    'Мне это не нравится'
   ]
 
   const secondQuestion = [
@@ -46,44 +46,44 @@
     'Я ожидаю это',
     'Я отношусь к этому нейтрально',
     'Я могу это терпеть',
-    'Мне это не нравится',
+    'Мне это не нравится'
   ]
 
   const thirdQuestion = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   function QuestionaryInfo(props) {
     return (
-       <div className='flex flex-col items-center' id='header'>
+       <div className="flex flex-col items-center" id="header">
          <input
             defaultValue={props.currentName}
-            type='text'
+            type="text"
             onChange={props.handler}
-            className='text-4xl m-[10px] border border-black rounded-xl p-1 outline-none text-center'
-            id='questionary-name'
+            className="text-4xl m-[10px] border border-black rounded-xl p-1 outline-none text-center"
+            id="questionary-name"
          />
-         <p id='questionary-author'>Автор: {props.userName}</p>
+         <p id="questionary-author">Автор: {props.userName}</p>
        </div>
     )
   }
 
   function QualificationQuestions(props) {
     return (
-       <div className='m-[50px]'>
+       <div className="m-[50px]">
          {props.questions?.map(qQuestion => {
            return (
-              <div className='flex flex-col items-center m-[15px] q-question'>
+              <div className="flex flex-col items-center m-[15px] q-question">
                 <input
-                   className='text-3xl text-center border border-black rounded-xl outline-none'
+                   className="text-3xl text-center border border-black rounded-xl outline-none"
                    defaultValue={qQuestion.question}
                 />
-                <div className='flex flex-col m-[10px]'>
+                <div className="flex flex-col m-[10px]">
                   {qQuestion.answer_variants.map(answerVariant => {
                     return (
-                       <p className='m-1'>
+                       <p className="m-1">
                          <input
-                            type='text'
+                            type="text"
                             defaultValue={answerVariant}
-                            className='border border-black rounded-lg outline-none'
+                            className="border border-black rounded-lg outline-none"
                          />
                        </p>
                     )
@@ -98,72 +98,72 @@
 
   function FeatureQuestions(props) {
     return (
-       <div className='m-[10px]' id='feature-questions'>
+       <div className="m-[10px]" id="feature-questions">
          {props.questions?.map(fQuestion => {
            return (
-              <div className='flex m-[50px] flex-col items-center f-question'>
+              <div className="flex m-[50px] flex-col items-center f-question">
                 <input
                    type="text"
                    defaultValue={fQuestion.feature_name}
-                   className='text-3xl text-center border rounded-xl border-black outline-none'
+                   className="text-3xl text-center border rounded-xl border-black outline-none"
                    id="feature-name"
                 />
                 <textarea
                    defaultValue={fQuestion.feature_description}
-                   className='text-x m-[10px] border rounded-lg border-black text-center w-96 outline-none'
+                   className="text-x m-[10px] border rounded-lg border-black text-center w-96 outline-none"
                    wrap="soft"
                    id="feature-description"
                 ></textarea>
-                <div id='first-question-container'>
-                  <h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+                <div id="first-question-container">
+                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
                     Насколько вам нравится присутствие в продукте такой фичи,
                     свойства или характеристики?
                   </h1>
-                  <ul className='flex flex-col items-center m-[10px]'>
+                  <ul className="flex flex-col items-center m-[10px]">
                     {firstQuestion.map(answerVariant => {
                       return (
-                         <li className='m-[6px]'>
+                         <li className="m-[6px]">
                            <input
-                              type='radio'
+                              type="radio"
                               name={fQuestion.feature_name + '1'}
                            />
-                           <span className='ml-[5px]'>{answerVariant}</span>
+                           <span className="ml-[5px]">{answerVariant}</span>
                          </li>
                       )
                     })}
                   </ul>
                 </div>
-                <div id='second-question-container'>
-                  <h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+                <div id="second-question-container">
+                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
                     А если эта характеристика будет отсутствовать в продукте
                     или слабо выражена?
                   </h1>
-                  <ul className='flex flex-col items-center m-[10px]'>
+                  <ul className="flex flex-col items-center m-[10px]">
                     {secondQuestion.map(answerVariant => {
                       return (
-                         <li className='m-[5px]'>
+                         <li className="m-[5px]">
                            <input
-                              type='radio'
+                              type="radio"
                               name={fQuestion.feature_name + '2'}
                            />
-                           <span className='ml-[5px]'>{answerVariant}</span>
+                           <span className="ml-[5px]">{answerVariant}</span>
                          </li>
                       )
                     })}
                   </ul>
                 </div>
-                <div id='third-question-container'>
-                  <h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+                <div id="third-question-container">
+                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
                     На сколько важна для вас эта характеристика?
                   </h1>
-                  <div className='m-[10px] items-center justify-center flex'>
-                    <div className='flex flex-row'>
+                  <div className="m-[10px] items-center justify-center flex">
+                    <div className="flex flex-row">
                       {thirdQuestion.map(answerVariant => {
                         return (
-                           <div className='flex flex-col items-center justify-center m-[5px]'>
+                           <div className="flex flex-col items-center justify-center m-[5px]">
                              <input
-                                type='radio'
-                                className='m-[5px]'
+                                type="radio"
+                                className="m-[5px]"
                                 name={fQuestion.feature_name + '3'}
                              />
                              <span style={FAnswerVariantButtonStyles}>
@@ -189,34 +189,34 @@
       'Фамилия:',
       'Номер телефона:',
       'Мессенджер:',
-      'Адрес электронной почты:',
+      'Адрес электронной почты:'
     ]
     const engFields = [
       'first_name',
       'last_name',
       'phone_number',
       'messenger',
-      'email',
+      'email'
     ]
 
     return (
-       <div className='flex flex-col items-center'>
-         <div className='m-4 flex items-center flex-col'>
-           <h1 className='text-3xl'>Обратная связь</h1>
-           <p className='xs'>(*необязательно)</p>
+       <div className="flex flex-col items-center">
+         <div className="m-4 flex items-center flex-col">
+           <h1 className="text-3xl">Обратная связь</h1>
+           <p className="xs">(*необязательно)</p>
          </div>
-         <div className='flex flex-start m-4'>
-           <div id='feedback' className='flex flex-col p-2'>
+         <div className="flex flex-start m-4">
+           <div id="feedback" className="flex flex-col p-2">
              {fields.map((field, idx) => {
                return (
                   <label
                      field={engFields[idx]}
-                     className='flex flex-row justify-between'
+                     className="flex flex-row justify-between"
                   >
-                    <span className='mt-3'>{field}</span>
+                    <span className="mt-3">{field}</span>
                     <input
-                       type='text'
-                       className='border-[2px] rounded-lg border-gray ml-2 mt-2 outline-none'
+                       type="text"
+                       className="border-[2px] rounded-lg border-gray ml-2 mt-2 outline-none"
                     />
                   </label>
                )
@@ -287,7 +287,7 @@
 
       for (let x = 0; x < fQuestions.length; x++) {
         const fQuestion = {
-          id: questionary.feature_questions[x].id,
+          id: questionary.feature_questions[x].id
         }
 
         fQuestion.feature_name = fQuestions[x].querySelector("#feature-name").value

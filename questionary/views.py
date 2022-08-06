@@ -10,7 +10,6 @@ def questionary_fill_in(request, pk: int):
     context = {
         "questionary_id": str(pk)
     }
-
     return render(request, "questionary/questionary-fill-in.html", context)
 
 

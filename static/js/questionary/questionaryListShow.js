@@ -9,10 +9,9 @@ const showQuestionaryList = () => {
 
 			for (let x = 0; x < questionaries.length; x++) {
 				const questionary = questionaries[x]
-				console.log(questionary)
 				const div = document.createElement('div')
 				const child = document.createElement('div')
-				const name = document.createElement('h2')
+				const name = document.createElement('a')
 				const author = document.createElement('p')
 				const deleteButton = document.createElement('button')
 				const created_time = document.createElement('p')
@@ -25,6 +24,7 @@ const showQuestionaryList = () => {
 				)}`
 
 				name.setAttribute('class', 'questionary-name')
+				name.setAttribute("href", `/questionaries/${questionary.id}`)
 				author.setAttribute('class', 'questionary-author')
 
 				child.setAttribute('class', 'questionary')

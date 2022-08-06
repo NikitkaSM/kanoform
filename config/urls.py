@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from users.views import landing
 
+
 handler404 = "questionary.views.handler404"
 handler500 = "questionary.views.handler500"
 
