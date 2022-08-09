@@ -1,17 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>All Questionaries</title>
-    <link rel="stylesheet" href="/static/css/questionaryList.css">
-	</head>
-	<body>
-		<div id='questionariesContainer' class="questionariesContainer"></div>
-		<script 
-      src="/static/js/questionary/questionaryListShow.js"
-      type='module'
-    ></script>
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script type="module" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-	</body>
+<head>
+  <meta charset="UTF-8"/>
+  <title>All Questionaries</title>
+  <link href="/static/css/questionaryList.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id='root'></div>
+<script type="text/babel">
+  const {useState, useEffect} = React
+
+  function List() {
+    const [list, setList] = useState([])
+
+    useEffect(() => {
+      axios.get("/api/questionary-list/")
+         .then(response => setList(prev => [...prev, response.data]))
+         .catch(error => console.log(error))
+    }, [])
+
+    return (
+       <>
+         {list[0]?.map(questionary => {
+           return (
+              <a key={questionary.id} href={`/questionaries/${questionary.id}`}
+                   className="mt-2 border-t border-gray-300">
+                <div
+                   className="px-4 py-6 flex flex-col sm:flex-row items-center justify-between cursor-pointer transition-colors duration-300 ease border-b border-gray-300 hover:bg-gray-200 no-underline"
+                >
+                  <div className="relative rounded-full w-16 h-16">
+                    <img
+                       alt="Наш логотип"
+                       className="absolute left-0 top-0 w-full h-full rounded-full object-cover"
+                       src="/static/images/KanoFormIconLogo.svg"/>
+                  </div>
+                  <div className="mt-2 text-center sm:text-left sm:mt-0 sm:ml-4 flex-1">
+                    <p className="font-medium">{questionary.name}</p>
+                    <p className="">Автор: {questionary.user.username}</p>
+                    <p className="">Дата создания: {questionary.created_time.slice(0, 10)}</p>
+                  </div>
+                </div>
+              </a>
+           )
+         })}
+       </>
+    )
+  }
+
+  function App() {
+    return (
+       <>
+         <List/>
+       </>
+    )
+  }
+
+  ReactDOM
+     .createRoot(document.getElementById("root"))
+     .render(<App/>)
+</script>
+</div>
+</body>
 </html>

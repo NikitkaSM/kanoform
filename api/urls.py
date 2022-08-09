@@ -1,7 +1,7 @@
 from django.urls import path
 from api.views import FeatureQuestionGet, FeatureQuestionList, \
     QuestionaryList, QualificationQuestionGet, QualificationQuestionCreate, FeatureQuestionCreate, \
-    Questionary, Response
+    Questionary, Response, User
 
 urlpatterns = [
     path("qualification-question/<int:pk>", QualificationQuestionGet.as_view()),
@@ -17,4 +17,6 @@ urlpatterns = [
 
     path("response/<int:pk>", Response.as_view()),
     path("response/", Response.as_view()),
+
+    path("users/register/", User.as_view())
 ]

@@ -1,45 +1,18 @@
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import UserLoginForm, UserRegisterForm
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
-from config import settings
+from django.views.generic.edit import CreateView
+from django.views.decorators.csrf import csrf_protect
 
-
+@csrf_protect
 def register(request):
-    form = UserRegisterForm()
-
-    if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        email = request.POST.get('email')
-        username = request.POST.get('username')
-
-        if User.objects.get(email=email).exists():
-            return messages.error(request, "Пользователь с такой почтой уже существует.")
-
-        if User.objects.get(username=username).exists():
-            return messages.error(request, "Пользователь с таким юзернеймом уже существует.")
-
-        if form.is_valid():
-            ins = form.save()
-            email = form.cleaned_data['email']
-
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-
-            ins.email = email
-            ins.save()
-            form.save_m2m()
-
-            return HttpResponseRedirect('/landing')
-
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, 'users/register.html')
 
 
-@login_required
 def profile(request):
-    return render(request, "users/user_profile.html")
+    return render(request, "users/user-profile.html")
 
 
 def landing(request):
@@ -49,17 +22,21 @@ def landing(request):
 def login(request):
     form = UserLoginForm()
 
+    if request.user.username:
+        return HttpResponseRedirect("/users/profile")
+
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
 
-        if user and user.is_active:
+        if user and user.is_staff and user.is_active:
             auth.login(request, user)
             return HttpResponseRedirect("/questionaries/questionary-list/")
-        else:
-            return messages.error(request, 'Такой пользователь не существует')
+        elif user and user.is_active:
+            auth.login(request, user)
+            return HttpResponseRedirect("/users/profile")
 
     return render(request, "users/login.html", {'form': form})
 

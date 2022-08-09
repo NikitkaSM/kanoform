@@ -1,329 +1,337 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8"/>
-  <meta
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    name="viewport"
-  />
-  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-  <title>Редактирование анкеты</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script
-    crossorigin
-    src="https://unpkg.com/react@18/umd/react.production.min.js"
-  ></script>
-  <script
-    crossorigin
-    src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
-  ></script>
-</head>
-<body>
-{% csrf_token %}
-<div id="root"></div>
-<script type="text/babel">
-  const {useState, useEffect} = React
-  const questionaryId = window.location.pathname.replace(/\D/g, '')
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+			name="viewport"
+		/>
+		<meta content="ie=edge" http-equiv="X-UA-Compatible" />
+		<title>Редактирование анкеты</title>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react@18/umd/react.production.min.js"
+		></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+		></script>
+	</head>
+	<body>
+		{% csrf_token %}
+		<div id="root"></div>
+		<script type="text/babel">
+			const { useState, useEffect } = React
+			const questionaryId = window.location.pathname.replace(/\D/g, "")
 
-  const FAnswerVariantButtonStyles = {
-    width: 14,
-    height: 14,
-    marginLeft: 6
-  }
+			const FAnswerVariantButtonStyles = {
+				width: 14,
+				height: 14,
+				marginLeft: 6
+			}
 
-  const firstQuestion = [
-    'Мне это нравится',
-    'Я ожидаю, что эта характеристика будет в продукте',
-    'Я отношусь к ней нейтрально',
-    'Я могу ее терпеть',
-    'Мне это не нравится'
-  ]
+			const firstQuestion = [
+				"Мне это нравится",
+				"Я ожидаю, что эта характеристика будет в продукте",
+				"Я отношусь к ней нейтрально",
+				"Я могу ее терпеть",
+				"Мне это не нравится"
+			]
 
-  const secondQuestion = [
-    'Мне это нравится',
-    'Я ожидаю это',
-    'Я отношусь к этому нейтрально',
-    'Я могу это терпеть',
-    'Мне это не нравится'
-  ]
+			const secondQuestion = [
+				"Мне это нравится",
+				"Я ожидаю это",
+				"Я отношусь к этому нейтрально",
+				"Я могу это терпеть",
+				"Мне это не нравится"
+			]
 
-  const thirdQuestion = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+			const thirdQuestion = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  function QuestionaryInfo(props) {
-    return (
-       <div className="flex flex-col items-center" id="header">
-         <input
-            defaultValue={props.currentName}
-            type="text"
-            onChange={props.handler}
-            className="text-4xl m-[10px] border border-black rounded-xl p-1 outline-none text-center"
-            id="questionary-name"
-         />
-         <p id="questionary-author">Автор: {props.userName}</p>
-       </div>
-    )
-  }
+			function QuestionaryInfo(props) {
+				return (
+					<div className='flex flex-col items-center' id='header'>
+						<input
+							defaultValue={props.currentName}
+							type='text'
+							onChange={props.handler}
+							className='text-4xl m-[10px] border border-black rounded-xl p-1 outline-none text-center'
+							id='questionary-name'
+						/>
+						<p id='questionary-author'>Автор: {props.userName}</p>
+					</div>
+				)
+			}
 
-  function QualificationQuestions(props) {
-    return (
-       <div className="m-[50px]">
-         {props.questions?.map(qQuestion => {
-           return (
-              <div className="flex flex-col items-center m-[15px] q-question">
-                <input
-                   className="text-3xl text-center border border-black rounded-xl outline-none"
-                   defaultValue={qQuestion.question}
-                />
-                <div className="flex flex-col m-[10px]">
-                  {qQuestion.answer_variants.map(answerVariant => {
-                    return (
-                       <p className="m-1">
-                         <input
-                            type="text"
-                            defaultValue={answerVariant}
-                            className="border border-black rounded-lg outline-none"
-                         />
-                       </p>
-                    )
-                  })}
-                </div>
-              </div>
-           )
-         })}
-       </div>
-    )
-  }
+			function QualificationQuestions(props) {
+				return (
+					<div className='m-[50px]'>
+						{props.questions?.map(qQuestion => {
+							return (
+								<div className='flex flex-col items-center m-[15px] q-question'>
+									<input
+										className='text-3xl text-center border border-black rounded-xl outline-none'
+										defaultValue={qQuestion.question}
+									/>
+									<div className='flex flex-col m-[10px]'>
+										{qQuestion.answer_variants.map(answerVariant => {
+											return (
+												<p className='m-1'>
+													<input
+														type='text'
+														defaultValue={answerVariant}
+														className='border border-black rounded-lg outline-none'
+													/>
+												</p>
+											)
+										})}
+									</div>
+								</div>
+							)
+						})}
+					</div>
+				)
+			}
 
-  function FeatureQuestions(props) {
-    return (
-       <div className="m-[10px]" id="feature-questions">
-         {props.questions?.map(fQuestion => {
-           return (
-              <div className="flex m-[50px] flex-col items-center f-question">
-                <input
-                   type="text"
-                   defaultValue={fQuestion.feature_name}
-                   className="text-3xl text-center border rounded-xl border-black outline-none"
-                   id="feature-name"
-                />
-                <textarea
-                   defaultValue={fQuestion.feature_description}
-                   className="text-x m-[10px] border rounded-lg border-black text-center w-96 outline-none"
-                   wrap="soft"
-                   id="feature-description"
-                ></textarea>
-                <div id="first-question-container">
-                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
-                    Насколько вам нравится присутствие в продукте такой фичи,
-                    свойства или характеристики?
-                  </h1>
-                  <ul className="flex flex-col items-center m-[10px]">
-                    {firstQuestion.map(answerVariant => {
-                      return (
-                         <li className="m-[6px]">
-                           <input
-                              type="radio"
-                              name={fQuestion.feature_name + '1'}
-                           />
-                           <span className="ml-[5px]">{answerVariant}</span>
-                         </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-                <div id="second-question-container">
-                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
-                    А если эта характеристика будет отсутствовать в продукте
-                    или слабо выражена?
-                  </h1>
-                  <ul className="flex flex-col items-center m-[10px]">
-                    {secondQuestion.map(answerVariant => {
-                      return (
-                         <li className="m-[5px]">
-                           <input
-                              type="radio"
-                              name={fQuestion.feature_name + '2'}
-                           />
-                           <span className="ml-[5px]">{answerVariant}</span>
-                         </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-                <div id="third-question-container">
-                  <h1 className="text-center text-xl mt-[20px] mb-[30px]">
-                    На сколько важна для вас эта характеристика?
-                  </h1>
-                  <div className="m-[10px] items-center justify-center flex">
-                    <div className="flex flex-row">
-                      {thirdQuestion.map(answerVariant => {
-                        return (
-                           <div className="flex flex-col items-center justify-center m-[5px]">
-                             <input
-                                type="radio"
-                                className="m-[5px]"
-                                name={fQuestion.feature_name + '3'}
-                             />
-                             <span style={FAnswerVariantButtonStyles}>
+			function FeatureQuestions(props) {
+				return (
+					<div className='m-[10px]' id='feature-questions'>
+						{props.questions?.map(fQuestion => {
+							return (
+								<div className='flex m-[50px] flex-col items-center f-question'>
+									<input
+										type='text'
+										defaultValue={fQuestion.feature_name}
+										className='text-3xl text-center border rounded-xl border-black outline-none'
+										id='feature-name'
+									/>
+									<textarea
+										defaultValue={fQuestion.feature_description}
+										className='text-x m-[10px] border rounded-lg border-black text-center w-96 outline-none'
+										wrap='soft'
+										id='feature-description'
+									></textarea>
+									<div id='first-question-container'>
+										<h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+											Насколько вам нравится присутствие в продукте такой фичи,
+											свойства или характеристики?
+										</h1>
+										<ul className='flex flex-col items-center m-[10px]'>
+											{firstQuestion.map(answerVariant => {
+												return (
+													<li className='m-[6px]'>
+														<input
+															type='radio'
+															name={fQuestion.feature_name + "1"}
+														/>
+														<span className='ml-[5px]'>{answerVariant}</span>
+													</li>
+												)
+											})}
+										</ul>
+									</div>
+									<div id='second-question-container'>
+										<h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+											А если эта характеристика будет отсутствовать в продукте
+											или слабо выражена?
+										</h1>
+										<ul className='flex flex-col items-center m-[10px]'>
+											{secondQuestion.map(answerVariant => {
+												return (
+													<li className='m-[5px]'>
+														<input
+															type='radio'
+															name={fQuestion.feature_name + "2"}
+														/>
+														<span className='ml-[5px]'>{answerVariant}</span>
+													</li>
+												)
+											})}
+										</ul>
+									</div>
+									<div id='third-question-container'>
+										<h1 className='text-center text-xl mt-[20px] mb-[30px]'>
+											На сколько важна для вас эта характеристика?
+										</h1>
+										<div className='m-[10px] items-center justify-center flex'>
+											<div className='flex flex-row'>
+												{thirdQuestion.map(answerVariant => {
+													return (
+														<div className='flex flex-col items-center justify-center m-[5px]'>
+															<input
+																type='radio'
+																className='m-[5px]'
+																name={fQuestion.feature_name + "3"}
+															/>
+															<span style={FAnswerVariantButtonStyles}>
 																{answerVariant}
 															</span>
-                           </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-                <hr/>
-              </div>
-           )
-         })}
-       </div>
-    )
-  }
+														</div>
+													)
+												})}
+											</div>
+										</div>
+									</div>
+									<hr />
+								</div>
+							)
+						})}
+					</div>
+				)
+			}
 
-  function Feedback() {
-    const fields = [
-      'Имя:',
-      'Фамилия:',
-      'Номер телефона:',
-      'Мессенджер:',
-      'Адрес электронной почты:'
-    ]
-    const engFields = [
-      'first_name',
-      'last_name',
-      'phone_number',
-      'messenger',
-      'email'
-    ]
+			function Feedback() {
+				const fields = [
+					"Имя:",
+					"Фамилия:",
+					"Номер телефона:",
+					"Мессенджер:",
+					"Адрес электронной почты:"
+				]
+				const engFields = [
+					"first_name",
+					"last_name",
+					"phone_number",
+					"messenger",
+					"email"
+				]
 
-    return (
-       <div className="flex flex-col items-center">
-         <div className="m-4 flex items-center flex-col">
-           <h1 className="text-3xl">Обратная связь</h1>
-           <p className="xs">(*необязательно)</p>
-         </div>
-         <div className="flex flex-start m-4">
-           <div id="feedback" className="flex flex-col p-2">
-             {fields.map((field, idx) => {
-               return (
-                  <label
-                     field={engFields[idx]}
-                     className="flex flex-row justify-between"
-                  >
-                    <span className="mt-3">{field}</span>
-                    <input
-                       type="text"
-                       className="border-[2px] rounded-lg border-gray ml-2 mt-2 outline-none"
-                    />
-                  </label>
-               )
-             })}
-           </div>
-         </div>
-       </div>
-    )
-  }
+				return (
+					<div className='flex flex-col items-center'>
+						<div className='m-4 flex items-center flex-col'>
+							<h1 className='text-3xl'>Обратная связь</h1>
+							<p className='xs'>(*необязательно)</p>
+						</div>
+						<div className='flex flex-start m-4'>
+							<div id='feedback' className='flex flex-col p-2'>
+								{fields.map((field, idx) => {
+									return (
+										<label
+											field={engFields[idx]}
+											className='flex flex-row justify-between'
+										>
+											<span className='mt-3'>{field}</span>
+											<input
+												type='text'
+												className='border-[2px] rounded-lg border-gray ml-2 mt-2 outline-none'
+											/>
+										</label>
+									)
+								})}
+							</div>
+						</div>
+					</div>
+				)
+			}
 
-  function Submit(props) {
-    return (
-       <div className="text-center m-6" id="submit-button">
-         <button
-            type="submit"
-            onClick={props.handler}
-            className="bg-lime-300 border border-lime-300 text-xs p-2 rounded-2xl hover:bg-lime-500 duration-500"
-         >Сохранить изменения
-         </button>
-       </div>
-    )
-  }
+			function Submit(props) {
+				return (
+					<div className='text-center m-6' id='submit-button'>
+						<button
+							type='submit'
+							onClick={props.handler}
+							className='bg-lime-300 border border-lime-300 text-xs p-2 rounded-2xl hover:bg-lime-500 duration-500'
+						>
+							Сохранить изменения
+						</button>
+					</div>
+				)
+			}
 
-  function Questionary() {
-    const [questionary, setQuestionary] = useState({})
-    const [userName, setUserName] = useState('')
-    const [changedQuestionaryName, setQuestionaryName] = useState('')
-    const qQuestions = document.getElementsByClassName("q-question")
-    const fQuestions = document.getElementsByClassName("f-question")
+			function Questionary() {
+				const [questionary, setQuestionary] = useState({})
+				const [userName, setUserName] = useState("")
+				const [changedQuestionaryName, setQuestionaryName] = useState("")
+				const qQuestions = document.getElementsByClassName("q-question")
+				const fQuestions = document.getElementsByClassName("f-question")
 
-    function changedQuestionaryNameHandler(event) {
-      setQuestionaryName(event.target.value)
-    }
+				function changedQuestionaryNameHandler(event) {
+					setQuestionaryName(event.target.value)
+				}
 
-    useEffect(() => {
-      axios.get(`/api/questionary/${questionaryId}`).then(response => {
-        setQuestionary(prev => ({...prev, ...response.data}))
-        setUserName(response.data.user.username)
-        setQuestionaryName(response.data.name)
-      })
-    }, [])
+				useEffect(() => {
+					axios.get(`/api/questionary/${questionaryId}`).then(response => {
+						setQuestionary(prev => ({ ...prev, ...response.data }))
+						setUserName(response.data.user.username)
+						setQuestionaryName(response.data.name)
+					})
+				}, [])
 
-    function sendRequest() {
-      const newQuestionary = {
-        name: changedQuestionaryName,
-        user: questionary.user,
-        qualification_questions: [],
-        feature_questions: []
-      }
+				function sendRequest() {
+					const newQuestionary = {
+						name: changedQuestionaryName,
+						user: questionary.user,
+						qualification_questions: [],
+						feature_questions: []
+					}
 
-      typeof questionary.feedback === "undefined" ? null : newQuestionary.feedback = questionary.feedback
+					typeof questionary.feedback === "undefined"
+						? null
+						: (newQuestionary.feedback = questionary.feedback)
 
-      for (let x = 0; x < qQuestions.length; x++) {
-        const qQuestion = {
-          id: questionary.qualification_questions[x].id,
-          answer_variants: []
-        }
-        qQuestion.question = qQuestions[x].querySelector("input").value
+					for (let x = 0; x < qQuestions.length; x++) {
+						const qQuestion = {
+							id: questionary.qualification_questions[x].id,
+							answer_variants: []
+						}
+						qQuestion.question = qQuestions[x].querySelector("input").value
 
-        const answerVariants = qQuestions[x].querySelector("div").querySelectorAll("input")
+						const answerVariants = qQuestions[x]
+							.querySelector("div")
+							.querySelectorAll("input")
 
-        for (let i = 0; i < answerVariants.length; i++) {
-          qQuestion.answer_variants.push(answerVariants[i].value)
-        }
+						for (let i = 0; i < answerVariants.length; i++) {
+							qQuestion.answer_variants.push(answerVariants[i].value)
+						}
 
-        newQuestionary.qualification_questions.push(qQuestion)
-      }
+						newQuestionary.qualification_questions.push(qQuestion)
+					}
 
-      for (let x = 0; x < fQuestions.length; x++) {
-        const fQuestion = {
-          id: questionary.feature_questions[x].id
-        }
+					for (let x = 0; x < fQuestions.length; x++) {
+						const fQuestion = {
+							id: questionary.feature_questions[x].id
+						}
 
-        fQuestion.feature_name = fQuestions[x].querySelector("#feature-name").value
-        fQuestion.feature_description = fQuestions[x].querySelector("#feature-description").value
+						fQuestion.feature_name =
+							fQuestions[x].querySelector("#feature-name").value
+						fQuestion.feature_description = fQuestions[x].querySelector(
+							"#feature-description"
+						).value
 
-        newQuestionary.feature_questions.push(fQuestion)
-      }
+						newQuestionary.feature_questions.push(fQuestion)
+					}
 
-      axios.put(`/api/questionary/${questionaryId}`, newQuestionary, {
-        headers: {
-          "X-CSRFToken": document.body.querySelector("input").getAttribute("value")
-        }
-      })
-    }
+					axios.put(`/api/questionary/${questionaryId}`, newQuestionary, {
+						headers: {
+							"X-CSRFToken": document.body
+								.querySelector("input")
+								.getAttribute("value")
+						}
+					})
+				}
 
-    return (
-       <>
-         <QuestionaryInfo
-            userName={userName}
-            handler={changedQuestionaryNameHandler}
-            currentName={changedQuestionaryName}
-         />
-         <QualificationQuestions
-            questions={questionary.qualification_questions}
-         />
-         <FeatureQuestions
-            questions={questionary.feature_questions}
-         />
-         <Submit handler={sendRequest}/>
-       </>
-    )
-  }
+				return (
+					<>
+						<QuestionaryInfo
+							userName={userName}
+							handler={changedQuestionaryNameHandler}
+							currentName={changedQuestionaryName}
+						/>
+						<QualificationQuestions
+							questions={questionary.qualification_questions}
+						/>
+						<FeatureQuestions questions={questionary.feature_questions} />
+						<Submit handler={sendRequest} />
+					</>
+				)
+			}
 
-  ReactDOM.createRoot(document.getElementById('root')).render(
-     <Questionary/>
-  )
-</script>
-</body>
+			ReactDOM.createRoot(document.getElementById("root")).render(
+				<Questionary />
+			)
+		</script>
+	</body>
 </html>

@@ -3,6 +3,9 @@ from questionary.models import FeatureQuestion as FeatureQuestionModel, \
     QualificationQuestion as QualificationQuestionModel, Questionary as QuestionaryModel, \
     QualificationResponse as QualificationResponseModel, FeatureResponse as FeatureResponseModel, \
     Response as ResponseModel, Feedback as FeedbackModel
+from django.contrib.auth.models import User
+import hashlib
+import os
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
@@ -130,3 +133,17 @@ class ResponseSerializer(serializers.ModelSerializer):
         model = ResponseModel
         fields = ("id", "feedback", "questionary", "qualification_response", 'feature_response')
         depth = 2
+
+
+class UserSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        context: dict = self.context['request'].data
+        user = User.objects.create(username=context["username"], first_name=context["first_name"])
+        user.set_password(context["password"])
+        user.save()
+
+        return user
+
+    class Meta:
+        model = User
+        fields = ("first_name", "username", "password")

@@ -5,8 +5,10 @@ from questionary.models import Questionary as QuestionaryModel, \
 from rest_framework.response import Response as ResponseJson
 from api.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
     QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer, \
-    QuestionaryListSerializer, ResponseSerializer
+    QuestionaryListSerializer, ResponseSerializer, UserSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
+from django.contrib.auth.models import User as UserModel
+
 
 
 class QualificationQuestionGet(APIView):
@@ -81,3 +83,8 @@ class FeatureQuestionCreate(APIView):
 class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView):
     queryset = QuestionaryModel.objects.all()
     serializer_class = QuestionarySerializer
+
+
+class User(CreateAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = UserSerializer
