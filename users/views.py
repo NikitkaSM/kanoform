@@ -1,10 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import UserLoginForm, UserRegisterForm
-from django.contrib.auth.models import User
-from django.contrib import messages, auth
-from django.views.generic.edit import CreateView
+from .forms import UserLoginForm
+from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
+
 
 @csrf_protect
 def register(request):

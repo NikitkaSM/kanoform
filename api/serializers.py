@@ -4,8 +4,7 @@ from questionary.models import FeatureQuestion as FeatureQuestionModel, \
     QualificationResponse as QualificationResponseModel, FeatureResponse as FeatureResponseModel, \
     Response as ResponseModel, Feedback as FeedbackModel
 from django.contrib.auth.models import User
-import hashlib
-import os
+from django.contrib import auth
 
 
 class QualificationQuestionSerializer(serializers.ModelSerializer):
@@ -135,7 +134,7 @@ class ResponseSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class UserSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         context: dict = self.context['request'].data
         user = User.objects.create(username=context["username"], first_name=context["first_name"])
@@ -147,3 +146,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("first_name", "username", "password")
+
+
+# class LoginSerializer(serializers.Serializer):
+#     def create(self, validated_data):
+#         request = self.context["request"]
+#         auth.login()                                      Недоделанное апи логина
+
+
+class FeatureAnswerVariantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeatureResponseModel
+        fields = "__all__"

@@ -1,14 +1,13 @@
 from rest_framework.views import APIView
 from questionary.models import Questionary as QuestionaryModel, \
     QualificationQuestion as QualificationQuestionModel, \
-    FeatureQuestion as FeatureQuestionModel, Response as ResponseModel
+    FeatureQuestion as FeatureQuestionModel, Response as ResponseModel, FeatureResponse as FeatureResponseModel
 from rest_framework.response import Response as ResponseJson
 from api.serializers import QuestionarySerializer, QualificationQuestionSerializer, \
     QualificationQuestionCreateSerializer, FeatureQuestionSerializer, FeatureQuestionCreateSerializer, \
-    QuestionaryListSerializer, ResponseSerializer, UserSerializer
+    QuestionaryListSerializer, ResponseSerializer, RegisterSerializer, FeatureAnswerVariantsSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
 from django.contrib.auth.models import User as UserModel
-
 
 
 class QualificationQuestionGet(APIView):
@@ -85,6 +84,23 @@ class Questionary(CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView)
     serializer_class = QuestionarySerializer
 
 
-class User(CreateAPIView):
+class Register(CreateAPIView):
     queryset = UserModel.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = RegisterSerializer
+
+
+# class Login(CreateAPIView):
+#     queryset = UserModel.objects.all()
+#     serializer_class = LoginSerializer  недоделанное апи логина
+
+
+class Analytics(APIView):
+    def get(self, request, pk):
+        answer_variants = FeatureResponseModel.objects.filter(feature_question=pk)
+        serializer = FeatureAnswerVariantsSerializer(answer_variants, many=True)
+        data = []
+
+        for old_answer_variant in serializer.data:
+            data.append(dict(old_answer_variant)["answer_3"])
+
+        return ResponseJson(data)

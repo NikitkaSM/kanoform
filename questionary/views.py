@@ -6,6 +6,10 @@ def questionary_editing(request, pk: int):
     return render(request, "questionary/questionary-editing.html")
 
 
+def analytics(request, pk: int):
+    return render(request, "questionary/analytics.html")
+
+
 def questionary_fill_in(request, pk: int):
     context = {
         "questionary_id": str(pk)
