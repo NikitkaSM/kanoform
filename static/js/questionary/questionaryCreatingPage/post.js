@@ -12,7 +12,6 @@ const getQuestionaryName = () => {
 }
 
 const getFeatureQuestions = () => {
-	console.log('questons')
 	const featureQuestionsLi = document.getElementsByClassName('featureQuestion')
 	const featureQuestionsLiLength = featureQuestionsLi.length
 	const featureQuestions = []

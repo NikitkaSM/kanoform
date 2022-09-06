@@ -1,0 +1,19 @@
+{
+	"privlekatelnaya": [
+		{
+			"qualification_answers": [
+				{
+					"question": "Кем вы работаете?",
+					"answer": "Разработчик"
+				}
+			],
+			"feature_answers": [
+				{
+					"feature_name": "like",
+					"implemented_score": 4,
+					"missing_score": 1
+				}
+			]
+		}	
+	]
+}

@@ -1,0 +1,16 @@
+{
+  "Привлекательная": [
+    {
+      "feature": {
+        "name": "like",
+        "implemented_score": 3,
+        "missing_score": 4,
+        "importance_score": 4
+      },
+      "qualification": {
+        "question": "Кем вы работаете?",
+        "answer": "Программист"
+      }
+    }
+  ]
+}

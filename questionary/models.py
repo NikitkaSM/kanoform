@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class Questionary(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
-    name = models.CharField(max_length=50, default="My Form")
+    name = models.CharField(max_length=51, default="My Form")
     created_time = models.DateTimeField(default=timezone.now, blank=True)
 
     class Meta:
@@ -54,8 +54,8 @@ class FeatureQuestion(models.Model):
 class FeatureResponse(models.Model):
     feature_question = models.ForeignKey(FeatureQuestion,
                                          on_delete=models.CASCADE)
-    answer_1 = models.TextField()
-    answer_2 = models.TextField()
+    answer_1 = models.IntegerField()
+    answer_2 = models.IntegerField()
     answer_3 = models.IntegerField()
     response = models.ForeignKey(
         "Response",
@@ -97,3 +97,10 @@ class Feedback(models.Model):
 
     class Meta:
         verbose_name_plural = "Feedback"
+
+dictionary = {
+    "key": 1,
+    "key2": 2
+}
+
+dictionary.get("key", None)
